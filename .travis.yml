@@ -1,0 +1,12 @@
+sudo: required
+
+services:
+  - docker
+
+install:
+  - docker build --tag ampache_image .
+
+script:
+  - docker images | grep ampache_image
+  - docker run -d --name=ampache_container -p 1234:80 ampache_image
+  - docker ps | grep ampache_container
