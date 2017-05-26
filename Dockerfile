@@ -21,6 +21,7 @@ RUN php -r "readfile('https://getcomposer.org/installer');" | php && \
 # For local testing / faster builds
 # COPY master.tar.gz /opt/master.tar.gz
 ADD https://github.com/ampache/ampache/archive/master.tar.gz /opt/ampache-master.tar.gz
+ADD ampache.cfg.php.dist /var/temp/ampache.cfg.php.dist
 
 # extraction / installation
 RUN rm -rf /var/www/* && \

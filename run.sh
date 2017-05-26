@@ -12,6 +12,11 @@ else
     echo "=> Using an existing volume of MySQL"
 fi
 
+if [[ ! -f /var/www/config/ampache.cfg.php ]]; then
+    mv /var/temp/ampache.cfg.php.dist /var/www/config/ampache.cfg.php.dist
+fi
+
+
 # Start apache in the background
 service apache2 start
 
