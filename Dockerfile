@@ -8,7 +8,7 @@ ADD create_mysql_admin_user.sh run.sh /
 ADD ampache.cfg.php.dist /var/temp/ampache.cfg.php.dist
 ADD 001-ampache.conf /etc/apache2/sites-available/
 
-RUN echo 'deb http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list
+RUN echo 'deb http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list.d/videolan.list
 RUN echo 'deb http://archive.ubuntu.com/ubuntu trusty main multiverse' >> /etc/apt/sources.list
 
 RUN apt-get update
