@@ -17,13 +17,9 @@ RUN apt-get -q -q update
 RUN apt-get -q -q -y upgrade
 RUN apt-get -q -q -y install inotify-tools mysql-server apache2 php php-json php-curl php-mysql composer libev-libevent-dev pwgen lame libvorbis-dev vorbis-tools flac libmp3lame-dev libfaac-dev libtheora-dev libvpx-dev libavcodec-extra ffmpeg git cron
 
-# For local testing / faster builds
-# COPY master.tar.gz /opt/master.tar.gz
-ADD https://github.com/ampache/ampache/archive/master.tar.gz /opt/ampache-master.tar.gz
-
-# extraction / installation
 RUN rm -rf /var/www/* && \
-    tar -C /var/www -xf /opt/ampache-master.tar.gz ampache-master --strip=1 && \
+    wget -qO - https://github.com/ampache/ampache/archive/master.tar.gz \
+    | tar -C /var/www -xzf - ampache-master --strip=1 && \
     cd /var/www && composer install --prefer-source --no-interaction && \
     chown -R www-data /var/www
 
