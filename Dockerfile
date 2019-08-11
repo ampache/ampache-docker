@@ -16,6 +16,8 @@ RUN wget -qO - https://download.videolan.org/pub/debian/videolan-apt.asc | apt-k
 RUN apt-get -q -q update
 RUN apt-get -q -q -y upgrade --no-install-recommends
 RUN apt-get -q -q -y install --no-install-recommends inotify-tools mysql-server apache2 php php-json php-curl php-mysql composer libev-libevent-dev pwgen lame libvorbis-dev vorbis-tools flac libmp3lame-dev libfaac-dev libtheora-dev libvpx-dev libavcodec-extra ffmpeg git cron
+RUN mkdir -p /var/run/mysqld \
+    && chown -R mysql /var/run/mysqld \
 RUN rm -rf /var/lib/mysql/* /var/www/* /etc/apache2/sites-enabled/* && \
     wget -qO - https://github.com/ampache/ampache/archive/master.tar.gz \
         | tar -C /var/www -xzf - ampache-master --strip=1 && \
