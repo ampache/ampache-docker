@@ -16,17 +16,11 @@ RUN wget -qO - https://download.videolan.org/pub/debian/videolan-apt.asc | apt-k
 RUN apt-get -q -q update
 RUN apt-get -q -q -y upgrade
 RUN apt-get -q -q -y install inotify-tools mysql-server apache2 php php-json php-curl php-mysql composer libev-libevent-dev pwgen lame libvorbis-dev vorbis-tools flac libmp3lame-dev libfaac-dev libtheora-dev libvpx-dev libavcodec-extra ffmpeg git cron
-
-RUN rm -rf /var/www/* && \
+RUN rm -rf /var/lib/mysql/* /var/www/* && \
     wget -qO - https://github.com/ampache/ampache/archive/master.tar.gz \
     | tar -C /var/www -xzf - ampache-master --strip=1 && \
     cd /var/www && composer install --prefer-source --no-interaction && \
     chown -R www-data /var/www
-
-# setup mysql like this project does it: https://github.com/tutumcloud/tutum-docker-mysql
-# Remove pre-installed database
-
-RUN rm -rf /var/lib/mysql/*
 
 # setup apache with default ampache vhost
 RUN rm -rf /etc/apache2/sites-enabled/*
