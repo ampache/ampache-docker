@@ -15,7 +15,7 @@ RUN echo 'deb http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sou
 RUN wget -qO - https://download.videolan.org/pub/debian/videolan-apt.asc | apt-key add -
 RUN apt-get -q -q update
 RUN apt-get -q -q -y upgrade
-RUN apt-get -q -q -y install inotify-tools mysql-server apache2 php php-json php-curl php-mysql pwgen lame libvorbis-dev vorbis-tools flac libmp3lame-dev libavcodec-extra* libfaac-dev libtheora-dev libvpx-dev ffmpeg git
+RUN apt-get -q -q -y install inotify-tools mysql-server apache2 php php-json php-curl php-mysql pwgen lame libvorbis-dev vorbis-tools flac libmp3lame-dev libavcodec-extra libfaac-dev libtheora-dev libvpx-dev ffmpeg git
 
 # Install composer for dependency management
 RUN php -r "readfile('https://getcomposer.org/installer');" | php && \
