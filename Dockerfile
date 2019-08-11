@@ -10,12 +10,12 @@ ADD 001-ampache.conf /etc/apache2/sites-available/
 
 RUN chmod 0755 /*.sh
 RUN apt-get -q -q update
-RUN apt-get -q -q -y install wget gnupg ca-certificates
+RUN apt-get -q -q -y install --no-install-recommends wget gnupg ca-certificates
 RUN echo 'deb http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list.d/videolan.list
 RUN wget -qO - https://download.videolan.org/pub/debian/videolan-apt.asc | apt-key add -
 RUN apt-get -q -q update
-RUN apt-get -q -q -y upgrade
-RUN apt-get -q -q -y install inotify-tools mysql-server apache2 php php-json php-curl php-mysql composer libev-libevent-dev pwgen lame libvorbis-dev vorbis-tools flac libmp3lame-dev libfaac-dev libtheora-dev libvpx-dev libavcodec-extra ffmpeg git cron
+RUN apt-get -q -q -y upgrade --no-install-recommends
+RUN apt-get -q -q -y install --no-install-recommends inotify-tools mysql-server apache2 php php-json php-curl php-mysql composer libev-libevent-dev pwgen lame libvorbis-dev vorbis-tools flac libmp3lame-dev libfaac-dev libtheora-dev libvpx-dev libavcodec-extra ffmpeg git cron
 RUN rm -rf /var/lib/mysql/* /var/www/* /etc/apache2/sites-enabled/* && \
     wget -qO - https://github.com/ampache/ampache/archive/master.tar.gz \
         | tar -C /var/www -xzf - ampache-master --strip=1 && \
