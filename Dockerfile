@@ -17,7 +17,7 @@ RUN     chmod 0755 /*.sh \
     &&  apt-get -q -q -y upgrade --no-install-recommends \
     &&  apt-get -q -q -y install --no-install-recommends \
           inotify-tools mysql-server apache2 php php-json \
-          php-curl php-mysql composer libev-libevent-dev \
+          php-curl php-mysql php-gd php-xml composer libev-libevent-dev \
           pwgen lame libvorbis-dev vorbis-tools flac \
           libmp3lame-dev libfaac-dev libtheora-dev libvpx-dev \
           libavcodec-extra ffmpeg git cron \
