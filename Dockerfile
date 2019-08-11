@@ -4,8 +4,7 @@ MAINTAINER Afterster
 ENV DEBIAN_FRONTEND=noninteractive
 ENV MYSQL_PASS **Random**
 
-ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
-ADD run.sh /run.sh
+ADD create_mysql_admin_user.sh run.sh /
 ADD ampache.cfg.php.dist /var/temp/ampache.cfg.php.dist
 ADD 001-ampache.conf /etc/apache2/sites-available/
 
