@@ -9,8 +9,8 @@ ADD ampache.cfg.php.dist /var/temp/ampache.cfg.php.dist
 ADD 001-ampache.conf /etc/apache2/sites-available/
 
 RUN chmod 0755 /*.sh
-RUN apt-get update
-RUN apt-get -y install wget gnupg ca-certificates
+RUN apt-get -q -q update
+RUN apt-get -q -q -y install wget gnupg ca-certificates
 RUN echo 'deb http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list.d/videolan.list
 RUN wget -O - https://download.videolan.org/pub/debian/videolan-apt.asc|sudo apt-key add -
 RUN apt-get update
