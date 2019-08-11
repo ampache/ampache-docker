@@ -36,8 +36,6 @@ RUN rm -rf /var/www/* && \
 # Remove pre-installed database
 
 RUN rm -rf /var/lib/mysql/*
-ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
-ADD run.sh /run.sh
 RUN chmod 755 /*.sh
 
 # setup apache with default ampache vhost
