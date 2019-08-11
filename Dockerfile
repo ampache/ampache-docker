@@ -8,7 +8,7 @@ ADD create_mysql_admin_user.sh run.sh /
 ADD ampache.cfg.php.dist /var/temp/ampache.cfg.php.dist
 ADD 001-ampache.conf /etc/apache2/sites-available/
 
-RUN chmod 755 /*.sh
+RUN chmod 0755 /*.sh
 RUN echo 'deb http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list.d/videolan.list
 
 RUN apt-get update
