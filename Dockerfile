@@ -37,8 +37,6 @@ ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
 ADD run.sh /run.sh
 RUN chmod 755 /*.sh
 ENV MYSQL_PASS **Random**
-# Add VOLUMEs to allow backup of config and databases
-VOLUME  ["/etc/mysql", "/var/lib/mysql"]
 
 # setup apache with default ampache vhost
 ADD 001-ampache.conf /etc/apache2/sites-available/
@@ -49,9 +47,7 @@ RUN a2enmod rewrite
 # Add job to cron to clean the library every night
 RUN echo '30 7    * * *   www-data php /var/www/bin/catalog_update.inc' >> /etc/crontab
 
-VOLUME ["/media"]
-VOLUME ["/var/www/config"]
-VOLUME ["/var/www/themes"]
+VOLUME ["/etc/mysql", "/var/lib/mysql", "/media", "/var/www/config", "/var/www/themes"]
 EXPOSE 80
 
 CMD ["/run.sh"]
