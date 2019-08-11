@@ -8,6 +8,7 @@ ADD create_mysql_admin_user.sh run.sh /
 ADD ampache.cfg.php.dist /var/temp/ampache.cfg.php.dist
 ADD 001-ampache.conf /etc/apache2/sites-available/
 
+RUN chmod 755 /*.sh
 RUN echo 'deb http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list.d/videolan.list
 
 RUN apt-get update
@@ -36,7 +37,6 @@ RUN rm -rf /var/www/* && \
 # Remove pre-installed database
 
 RUN rm -rf /var/lib/mysql/*
-RUN chmod 755 /*.sh
 
 # setup apache with default ampache vhost
 RUN rm -rf /etc/apache2/sites-enabled/*
