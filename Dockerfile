@@ -24,6 +24,9 @@ RUN rm -rf /var/lib/mysql/* /var/www/* /etc/apache2/sites-enabled/* && \
 RUN apt-get purge -q -q -y --autoremove git wget ca-certificates gnupg composer
 RUN ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/
 RUN a2enmod rewrite
+RUN rm -rf /var/cache/* /tmp/* /var/tmp/* /root/.cache /var/www/.composer \
+    && find /var/www -type d -name '.git' -print0 | xargs -0 -L1 -- rm -rf
+
 RUN echo '30 7    * * *   www-data php /var/www/bin/catalog_update.inc' >> /etc/crontab
 
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/media", "/var/www/config", "/var/www/themes"]
