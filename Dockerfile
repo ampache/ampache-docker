@@ -4,6 +4,11 @@ MAINTAINER Afterster
 ENV DEBIAN_FRONTEND=noninteractive
 ENV MYSQL_PASS **Random**
 
+ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
+ADD run.sh /run.sh
+ADD ampache.cfg.php.dist /var/temp/ampache.cfg.php.dist
+ADD 001-ampache.conf /etc/apache2/sites-available/
+
 RUN echo 'deb http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list
 RUN echo 'deb-src http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list
 RUN echo 'deb http://archive.ubuntu.com/ubuntu trusty main multiverse' >> /etc/apt/sources.list
@@ -24,7 +29,6 @@ RUN php -r "readfile('https://getcomposer.org/installer');" | php && \
 # For local testing / faster builds
 # COPY master.tar.gz /opt/master.tar.gz
 ADD https://github.com/ampache/ampache/archive/master.tar.gz /opt/ampache-master.tar.gz
-ADD ampache.cfg.php.dist /var/temp/ampache.cfg.php.dist
 
 # extraction / installation
 RUN rm -rf /var/www/* && \
@@ -41,7 +45,6 @@ ADD run.sh /run.sh
 RUN chmod 755 /*.sh
 
 # setup apache with default ampache vhost
-ADD 001-ampache.conf /etc/apache2/sites-available/
 RUN rm -rf /etc/apache2/sites-enabled/*
 RUN ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/
 RUN a2enmod rewrite
