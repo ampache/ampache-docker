@@ -19,8 +19,8 @@ RUN apt-get -q -q -y install --no-install-recommends inotify-tools mysql-server 
 RUN rm -rf /var/lib/mysql/* /var/www/* /etc/apache2/sites-enabled/* && \
     wget -qO - https://github.com/ampache/ampache/archive/master.tar.gz \
         | tar -C /var/www -xzf - ampache-master --strip=1 && \
-    cd /var/www && composer install --prefer-source --no-interaction && \
-    chown -R www-data /var/www
+    chown -R www-data /var/www && \
+    su -s /bin/sh -c 'cd /var/www && composer install --prefer-source --no-interaction' www-data
 RUN apt-get purge -q -q -y --autoremove git wget ca-certificates gnupg composer
 RUN ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/
 RUN a2enmod rewrite
