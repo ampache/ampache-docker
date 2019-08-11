@@ -12,7 +12,7 @@ RUN chmod 0755 /*.sh
 RUN apt-get -q -q update
 RUN apt-get -q -q -y install wget gnupg ca-certificates
 RUN echo 'deb http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list.d/videolan.list
-RUN wget -qO - https://download.videolan.org/pub/debian/videolan-apt.asc|sudo apt-key add -
+RUN wget -qO - https://download.videolan.org/pub/debian/videolan-apt.asc | apt-key add -
 RUN apt-get -q -q update
 RUN apt-get -q -q -y upgrade
 RUN apt-get -q -q -y install inotify-tools mysql-server apache2 wget php5 php5-json php5-curl php5-mysqlnd pwgen lame libvorbis-dev vorbis-tools flac libmp3lame-dev libavcodec-extra* libfaac-dev libtheora-dev libvpx-dev libav-tools git
