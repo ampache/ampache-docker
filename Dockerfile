@@ -28,8 +28,7 @@ RUN ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabl
 RUN a2enmod rewrite
 RUN rm -rf /var/cache/* /tmp/* /var/tmp/* /root/.cache /var/www/.composer \
     && find /var/www -type d -name '.git' -print0 | xargs -0 -L1 -- rm -rf
-
-RUN echo '30 7    * * *   www-data php /var/www/bin/catalog_update.inc' >> /etc/crontab
+RUN echo '30 7 * * *   /usr/bin/php /var/www/bin/catalog_update.inc' | crontab -u www-data -
 
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/media", "/var/www/config", "/var/www/themes"]
 EXPOSE 80
