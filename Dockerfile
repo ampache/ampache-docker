@@ -1,6 +1,9 @@
 FROM ubuntu:18.04
 MAINTAINER Afterster
 
+ENV DEBIAN_FRONTEND=noninteractive
+ENV MYSQL_PASS **Random**
+
 RUN echo 'deb http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list
 RUN echo 'deb-src http://download.videolan.org/pub/debian/stable/ /' >> /etc/apt/sources.list
 RUN echo 'deb http://archive.ubuntu.com/ubuntu trusty main multiverse' >> /etc/apt/sources.list
@@ -36,7 +39,6 @@ RUN rm -rf /var/lib/mysql/*
 ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
 ADD run.sh /run.sh
 RUN chmod 755 /*.sh
-ENV MYSQL_PASS **Random**
 
 # setup apache with default ampache vhost
 ADD 001-ampache.conf /etc/apache2/sites-available/
