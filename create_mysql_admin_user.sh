@@ -23,7 +23,6 @@ mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION"
 
 
 echo "=> Done!"
-
 echo "========================================================================"
 echo "You can now connect to this MySQL Server using:"
 echo ""
