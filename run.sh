@@ -12,6 +12,9 @@ else
     echo "=> Using an existing volume of MySQL"
 fi
 
+if [[ -f /var/temp/ampache.cfg.php && ! -f /var/www/config/ampache.cfg.php ]]; then
+    mv /var/temp/ampache.cfg.php /var/www/config/ampache.cfg.php
+fi
 if [[ ! -f /var/www/config/ampache.cfg.php ]]; then
     mv /var/temp/ampache.cfg.php.dist /var/www/config/ampache.cfg.php.dist
 fi
