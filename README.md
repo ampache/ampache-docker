@@ -6,7 +6,7 @@ Docker container for Ampache, a web based audio/video streaming application and 
 
 ## Usage
 ```bash
-docker run --name=ampache -d -v /path/to/your/music:/media:ro -p 80:80 ampache/ampache
+docker run --name=ampache -d -v /path/to/your/music:/media:ro -v /path/to/savable/configs:/var/www/config -v /etc/localtime:/etc/localtime:ro -p 80:80 ampache/ampache
 ```
 
 ## Installation
