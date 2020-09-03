@@ -75,7 +75,8 @@ EXPOSE 80
 
 COPY run.sh inotifywatch.sh cron.sh apache2.sh mysql.sh create_mysql_admin_user.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
-COPY --chown=www-data:www-data ampache.cfg.* /var/temp/
+COPY data/config/ampache.cfg.* /var/temp/
+RUN  chown www-data:www-data /var/temp/ampache.cfg.*
 COPY docker-entrypoint.sh /usr/local/bin
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
