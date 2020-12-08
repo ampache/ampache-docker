@@ -65,7 +65,7 @@ RUN     apt-get -q -q update \
           software-properties-common \
     &&  apt-get -qq autoremove
 
-VOLUME ["/etc/mysql", "/var/lib/mysql", "/media", "/var/www/config", "/var/www/themes"]
+VOLUME ["/var/lib/mysql", "/var/www/config"]
 EXPOSE 80
 
 COPY run.sh inotifywatch.sh cron.sh apache2.sh mysql.sh create_mysql_admin_user.sh /usr/local/bin/
