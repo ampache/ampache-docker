@@ -2,7 +2,7 @@ version: '3'
 
 services:
   ampache:
-    image: ampache/ampache:nosql
+    image: ampache/ampache:preview
     container_name: ampache
     restart: unless-stopped
     ports:
@@ -11,5 +11,3 @@ services:
       - ./data/config:/var/www/config
       - ./data/log:/var/log/ampache
       - ./data/media:/media
-      - ./data/mysql:/var/lib/mysql
-      - ./data/sites-enabled:/etc/apache2/sites-enabled

@@ -48,13 +48,17 @@ This method is recommended as it creates persistent volumes for important data. 
 docker-compose up -d
 ```
 
-The first time you run the container, you will also need to set the correct permissions on the configuration folder:
+The first time you run the container, you will need to create data folders and set the correct permissions on the configuration folder:
 
 ```bash
-chown www-data:www-data ./data/config -R
+./docker-compose.sh
 ```
 
-This will automatically create mount points for music at `./data/media`, persistent MySQL storage at `./data/mysql`, and a folder for the Ampache configuration file at `./data/config`.
+This will automatically create mount points for:
+
+* Media catalog "/media" folder `./data/media`
+* Ampache debug logs `./data/log` 
+* Ampache config folder `./data/config`.
 
 ## Running on ARM
 
