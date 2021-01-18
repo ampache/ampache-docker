@@ -11,3 +11,4 @@ services:
       - ./data/config:/var/www/config
       - ./data/log:/var/log/ampache
       - ./data/media:/media
+      - ./data/mysql:/var/lib/mysql
