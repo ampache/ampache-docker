@@ -12,4 +12,3 @@ services:
       - ./data/log:/var/log/ampache
       - ./data/media:/media
       - ./data/mysql:/var/lib/mysql
-      - ./data/sites-enabled:/etc/apache2/sites-enabled
