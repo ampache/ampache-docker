@@ -87,5 +87,5 @@ The automated builds for the official repo are now built for linux/amd64, linux/
 
 ## Current Release
 
-Ampache 4.2.5
+Ampache 4.2.6
 

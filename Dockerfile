@@ -2,7 +2,7 @@ FROM debian:stable
 LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
-ARG VERSION=4.2.5
+ARG VERSION=4.2.6
 
 RUN     apt-get -q -q update \
     &&  apt-get -q -q -y install --no-install-recommends \
