@@ -2,7 +2,7 @@ FROM debian:stable
 LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
-ARG VERSION=5.0.0-pre-release3
+ARG VERSION=5.0.0-pre-release4
 
 RUN     apt-get -q -q update \
     &&  apt-get -q -q -y install --no-install-recommends \
@@ -42,7 +42,7 @@ RUN     apt-get -q -q update \
           unzip \
           zip \
     &&  rm -rf /var/www/* /etc/apache2/sites-enabled/* /var/lib/apt/lists/* \
-    &&  wget -q -O /tmp/ampache.zip https://github.com/ampache/ampache/releases/download/${VERSION}/ampache-${VERSION}_all.zip \
+    &&  wget -q -O /tmp/ampache.zip https://github.com/ampache/ampache/releases/download/5.0.0-pre-release/ampache-${VERSION}_all.zip \
     &&  unzip /tmp/ampache.zip -d /var/www/ \
     &&  mv /var/www/public/rest/.htac* /var/www/public/rest/.htaccess \
     &&  mv /var/www/public/play/.htac* /var/www/public/play/.htaccess \
