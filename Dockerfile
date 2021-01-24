@@ -2,7 +2,7 @@ FROM debian:stable
 LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
-ARG VERSION=5.0.0-pre-release4
+ARG VERSION=5.0.0-pre-release5
 
 RUN     apt-get -q -q update \
     &&  apt-get -q -q -y install --no-install-recommends \
