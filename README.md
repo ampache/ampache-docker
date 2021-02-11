@@ -55,6 +55,12 @@ chown www-data:www-data ./data/config -R
 ```
 
 This will automatically create mount points for music at `./data/media`, persistent MySQL storage at `./data/mysql`, and a folder for the Ampache configuration file at `./data/config`.
+Beware that `/media` within the container should also be writeable by `www-data` (also within the container) in order for uploads to work:
+
+```bash
+# Give the www-data group write access to the /media folder
+docker-compose exec ampache bash -c "chgrp www-data /media && chmod g+w /media"
+```
 
 ## Running on ARM
 
