@@ -6,9 +6,9 @@ RUN     tar -xzf /tmp/develop.tar.gz --strip=1 -C . \
     &&  docker-php-ext-install intl \
     &&  composer install --prefer-source --no-interaction \
     &&  rm -rf .git* .php_cs .sc .scrutinizer.yml .tgitconfig .travis.yml .tx *.md \
-    &&  mv ./rest/.htac* ./rest/.htaccess \
-    &&  mv ./play/.htac* ./play/.htaccess \
-    &&  mv ./channel/.htac* ./channel/.htaccess \
+    &&  mv ./public/rest/.htac* ./public/rest/.htaccess \
+    &&  mv ./public/play/.htac* ./public/play/.htaccess \
+    &&  mv ./public/channel/.htac* ./public/channel/.htaccess \
     &&  chmod -R 775 .
 
 FROM debian:stable
