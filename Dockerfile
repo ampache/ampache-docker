@@ -20,11 +20,13 @@ ENV MYSQL_PASS **Random**
 RUN     apt-get -q -q update \
     &&  apt-get -q -q -y install --no-install-recommends \
           software-properties-common \
+          wget \
     &&  apt-add-repository contrib \
     &&  apt-add-repository non-free \
-    &&  apt-get -q -q update \
-    &&  apt-get -q -q -y install --no-install-recommends libdvd-pkg \
-    &&  dpkg-reconfigure libdvd-pkg \
+    &&  apt-get update \
+    &&  apt-get -qq install apt-transport-https lsb-release ca-certificates curl \
+    &&  wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
+    &&  sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' \
     &&  apt-get update \
     &&  apt-get -qq install --no-install-recommends \
           apache2 \
@@ -42,14 +44,13 @@ RUN     apt-get -q -q update \
           libvorbis-dev \
           libvpx-dev \
           mariadb-server \
-          php \
-          php-curl \
-          php-gd \
-          php-intl \
-          php-json \
-          php-mysql \
-          php-xml \
-          pwgen \
+          php7.4 \
+          php7.4-curl \
+          php7.4-gd \
+          php7.4-intl \
+          php7.4-json \
+          php7.4-mysql \
+          php7.4-xml \
           supervisor \
           vorbis-tools \
           zip \
