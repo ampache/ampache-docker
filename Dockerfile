@@ -62,7 +62,7 @@ RUN     apt-get -q -q update \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
     &&  rm -rf /var/cache/* /tmp/* /var/tmp/* /root/.cache /var/www/docs \
-    &&  echo '30 7 * * *   /usr/bin/php /var/www/bin/catalog_update.inc' | crontab -u www-data -
+    &&  echo '30 7 * * *   /usr/bin/php /var/www/bin/cli run:updateCatalog' | crontab -u www-data -
 
 COPY --from=Builder --chown=www-data:www-data /app /var/www
 RUN     apt-get -qq purge \
