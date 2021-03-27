@@ -62,7 +62,7 @@ RUN     apt-get -q -q update \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
     &&  rm -rf /var/cache/* /tmp/* /var/tmp/* /root/.cache /var/www/docs \
-    &&  echo '30 7 * * *   /usr/bin/php /var/www/bin/cli run:updateCatalog' | crontab -u www-data -
+    &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data -
 
 COPY --from=Builder --chown=www-data:www-data /app /var/www
 RUN     apt-get -qq purge \
@@ -76,7 +76,7 @@ RUN     apt-get -qq purge \
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/media", "/var/www/config", "/var/www/themes"]
 EXPOSE 80
 
-COPY run.sh inotifywatch.sh cron.sh apache2.sh mysql.sh create_mysql_admin_user.sh /usr/local/bin/
+COPY run.sh inotifywatch.sh cron.sh apache2.sh mysql.sh create_mysql_admin_user.sh ampache_cron.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
 COPY data/config/ampache.cfg.* /var/temp/
 RUN  chown www-data:www-data /var/temp/ampache.cfg.*
