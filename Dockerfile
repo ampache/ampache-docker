@@ -56,16 +56,17 @@ RUN     apt-get -q -q update \
     &&  wget -q -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
     &&  unzip /tmp/develop.zip -d /tmp/ \
     &&  mv /tmp/ampache-develop/ /var/www/ \
-    &&  wget -q -O /usr/local/bin/composer https://getcomposer.org/download/latest-stable/composer.phar \
-    &&  chmod +x /usr/local/bin/composer \
-    &&  cd /var/www \
-    &&  composer install --prefer-dist --no-interaction \
-    &&  rm -rf .php_cs .sc .scrutinizer.yml .tgitconfig .travis.yml .tx *.md \
-    &&  rm /usr/local/bin/composer \
-    &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
     &&  mv /var/www/public/rest/.htac* /var/www/public/rest/.htaccess \
     &&  mv /var/www/public/play/.htac* /var/www/public/play/.htaccess \
     &&  mv /var/www/public/channel/.htac* /var/www/public/channel/.htaccess \
+    &&  rm -rf .php_cs .sc .scrutinizer.yml .tgitconfig .travis.yml .tx *.md \
+    &&  cd /var/www \
+    &&  wget -q -O ./composer https://getcomposer.org/download/latest-stable/composer.phar \
+    &&  chmod +x ./composer \
+    &&  ./composer install --prefer-dist --no-interaction \
+    &&  ./composer clear-cache \
+    &&  rm ./composer \
+    &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
     &&  chown -R www-data:www-data /var/www \
     &&  chmod -R 775 /var/www \
     &&  apt-get -qq purge \
@@ -76,8 +77,7 @@ RUN     apt-get -q -q update \
           software-properties-common \
           git \
           unzip \
-    &&  apt-get -qq autoremove \
-    &&  composer clear-cache
+    &&  apt-get -qq autoremove
 
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/media", "/var/www/config", "/var/www/themes"]
 EXPOSE 80
