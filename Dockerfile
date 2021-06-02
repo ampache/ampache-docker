@@ -62,7 +62,7 @@ RUN     apt-get -q -q update \
     &&  composer install --prefer-dist --no-interaction \
     &&  rm -rf .php_cs .sc .scrutinizer.yml .tgitconfig .travis.yml .tx *.md \
     &&  rm /usr/local/bin/composer \
-    &&  find /var/www -type d -name ".git*" -exec rm -rf {} \; \
+    &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
     &&  mv /var/www/public/rest/.htac* /var/www/public/rest/.htaccess \
     &&  mv /var/www/public/play/.htac* /var/www/public/play/.htaccess \
     &&  mv /var/www/public/channel/.htac* /var/www/public/channel/.htaccess \
