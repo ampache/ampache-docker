@@ -59,8 +59,8 @@ RUN     apt-get -q -q update \
     &&  mv /var/www/public/rest/.htac* /var/www/public/rest/.htaccess \
     &&  mv /var/www/public/play/.htac* /var/www/public/play/.htaccess \
     &&  mv /var/www/public/channel/.htac* /var/www/public/channel/.htaccess \
-    &&  rm -rf .php_cs .sc .scrutinizer.yml .tgitconfig .travis.yml .tx *.md \
     &&  cd /var/www \
+    &&  rm -rf .php_cs .sc .scrutinizer.yml .tgitconfig .travis.yml .tx *.md \
     &&  wget -q -O ./composer https://getcomposer.org/download/latest-stable/composer.phar \
     &&  chmod +x ./composer \
     &&  ./composer install --prefer-dist --no-interaction \
