@@ -50,11 +50,11 @@ RUN     apt-get -q -q update \
     &&  mv /var/www/play/.htac* /var/www/play/.htaccess \
     &&  mv /var/www/channel/.htac* /var/www/channel/.htaccess \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
-          /var/www/.tgitconfig /var/www/.travis.yml /var/www/.tx /var/www/*.md \
+          /var/www/.tgitconfig /var/www/.travis.yml /var/www/*.md \
     &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
     &&  chown -R www-data:www-data /var/www \
     &&  chmod -R 775 /var/www \
-    &&  rm -rf /var/cache/* /tmp/* /var/tmp/* /root/.cache /var/www/docs \
+    &&  rm -rf /var/cache/* /tmp/* /var/tmp/* /root/.cache /var/www/docs /var/www/.tx \
     &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  apt-get -qq purge \
           libdvd-pkg \
