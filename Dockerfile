@@ -72,9 +72,11 @@ EXPOSE 80
 COPY run.sh inotifywatch.sh cron.sh apache2.sh ampache_cron.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
 COPY data/config/ampache.cfg.* /var/temp/
-RUN  chown www-data:www-data /var/temp/ampache.cfg.*
 COPY docker-entrypoint.sh /usr/local/bin
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+RUN  chown www-data:www-data /var/temp/ampache.cfg.* \
+    &&  chmod +x /usr/local/bin/*.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["run.sh"]
