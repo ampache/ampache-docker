@@ -51,8 +51,6 @@ RUN     apt-get -q -q update \
     &&  chown -R mysql /var/run/mysqld \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
-    &&  rm -rf /var/cache/* /tmp/* /var/tmp/* /root/.cache /var/www/docs \
-    &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  wget -q -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
     &&  unzip /tmp/develop.zip -d /tmp/ \
     &&  mv /tmp/ampache-develop/ /var/www/ \
@@ -60,15 +58,18 @@ RUN     apt-get -q -q update \
     &&  mv /var/www/public/play/.htac* /var/www/public/play/.htaccess \
     &&  mv /var/www/public/channel/.htac* /var/www/public/channel/.htaccess \
     &&  cd /var/www \
-    &&  rm -rf .php_cs .sc .scrutinizer.yml .tgitconfig .travis.yml .tx *.md \
     &&  wget -q -O ./composer https://getcomposer.org/download/latest-stable/composer.phar \
     &&  chmod +x ./composer \
     &&  ./composer install --prefer-dist --no-interaction \
     &&  ./composer clear-cache \
     &&  rm ./composer \
+    &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
+          /var/www/.tgitconfig /var/www/.travis.yml /var/www/.tx /var/www/*.md \
     &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
     &&  chown -R www-data:www-data /var/www \
     &&  chmod -R 775 /var/www \
+    &&  rm -rf /var/cache/* /tmp/* /var/tmp/* /root/.cache /var/www/docs \
+    &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  apt-get -qq purge \
           libdvd-pkg \
           lsb-release \
@@ -85,9 +86,11 @@ EXPOSE 80
 COPY run.sh inotifywatch.sh cron.sh apache2.sh mysql.sh create_mysql_admin_user.sh ampache_cron.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
 COPY data/config/ampache.cfg.* /var/temp/
-RUN  chown www-data:www-data /var/temp/ampache.cfg.*
 COPY docker-entrypoint.sh /usr/local/bin
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+RUN  chown www-data:www-data /var/temp/ampache.cfg.* \
+    &&  chmod +x /usr/local/bin/*.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["run.sh"]
