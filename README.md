@@ -23,7 +23,7 @@ To run official builds from docker hub you can run these commands:
 To run the current Ampache master (stable) branch
 
 ```bash
-docker run --name=ampache -d -v /path/to/your/music:/media:ro -p 80:80 ampache/ampache
+docker run --name=ampache -d -v /path/to/your/music:/media:ro -v /path/to/savable/configs:/var/www/config -v /etc/localtime:/etc/localtime:ro -p 80:80 ampache/ampache
 ```
 
 To run the current Ampache master (stable) branch **without an SQL server!**
