@@ -38,9 +38,11 @@ RUN     apt-get -q -q update \
           php7.4-gd \
           php7.4-intl \
           php7.4-json \
+          php7.4-ldap \
           php7.4-mysql \
           php7.4-xml \
           php7.4-zip \
+          pwgen \
           supervisor \
           vorbis-tools \
           zip \
@@ -83,13 +85,12 @@ RUN     apt-get -q -q update \
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/media", "/var/www/config", "/var/www/themes"]
 EXPOSE 80
 
-COPY run.sh inotifywatch.sh cron.sh apache2.sh mysql.sh create_mysql_admin_user.sh ampache_cron.sh /usr/local/bin/
+COPY run.sh inotifywatch.sh cron.sh apache2.sh mysql.sh create_mysql_admin_user.sh ampache_cron.sh docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
-COPY data/config/ampache.cfg.* /var/temp/
-COPY docker-entrypoint.sh /usr/local/bin
+COPY data/config/ampache.cfg.* /var/tmp/
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN  chown www-data:www-data /var/temp/ampache.cfg.* \
+RUN  chown www-data:www-data /var/tmp/ampache.cfg.* \
     &&  chmod +x /usr/local/bin/*.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
