@@ -63,6 +63,8 @@ Beware that `/media` within the container should also be writeable by `www-data`
 docker-compose exec ampache bash -c "chgrp www-data /media && chmod g+w /media"
 ```
 
+When creating a catalog, use `/media` as path which points to your mounted media files.
+
 ## Running on ARM
 
 The automated builds for the official repo are now built for linux/amd64, linux/arm/v7 and linux/arm64.
