@@ -51,6 +51,8 @@ RUN     apt-get -q -q update \
     &&  rm -rf /var/lib/mysql/* /var/www /etc/apache2/sites-enabled/* /var/lib/apt/lists/* \
     &&  mkdir -p /var/run/mysqld \
     &&  chown -R mysql /var/run/mysqld \
+    &&  mkdir -p /var/log/ampache \
+    &&  chown -R www-data:www-data /var/log/ampache \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
     &&  wget -q -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
