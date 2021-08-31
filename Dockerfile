@@ -2,7 +2,7 @@ FROM debian:stable
 LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
-ARG VERSION=4.4.3
+ARG VERSION=5.0.0
 
 RUN     apt-get -q -q update \
     &&  apt-get -q -q -y install --no-install-recommends \
@@ -13,6 +13,9 @@ RUN     apt-get -q -q update \
     &&  apt-get -q -q update \
     &&  apt-get -q -q -y install --no-install-recommends libdvd-pkg \
     &&  dpkg-reconfigure libdvd-pkg \
+    &&  apt-get -qq install apt-transport-https lsb-release ca-certificates curl \
+    &&  wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
+    &&  sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' \
     &&  apt-get update \
     &&  apt-get -qq install --no-install-recommends \
           apache2 \
@@ -29,14 +32,16 @@ RUN     apt-get -q -q update \
           libtheora-dev \
           libvorbis-dev \
           libvpx-dev \
-          php \
-          php-curl \
-          php-gd \
-          php-json \
-          php-ldap \
-          php-mysql \
-          php-xml \
-          php-zip \
+          mariadb-server \
+          php7.4 \
+          php7.4-curl \
+          php7.4-gd \
+          php7.4-intl \
+          php7.4-json \
+          php7.4-ldap \
+          php7.4-mysql \
+          php7.4-xml \
+          php7.4-zip \
           pwgen \
           supervisor \
           vorbis-tools \
@@ -49,9 +54,9 @@ RUN     apt-get -q -q update \
     &&  a2enmod rewrite \
     &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/${VERSION}/ampache-${VERSION}_all.zip \
     &&  unzip /tmp/master.zip -d /var/www/ \
-    &&  mv /var/www/rest/.htac* /var/www/rest/.htaccess \
-    &&  mv /var/www/play/.htac* /var/www/play/.htaccess \
-    &&  mv /var/www/channel/.htac* /var/www/channel/.htaccess \
+    &&  mv /var/www/public/rest/.htac* /var/www/public/rest/.htaccess \
+    &&  mv /var/www/public/play/.htac* /var/www/public/play/.htaccess \
+    &&  mv /var/www/public/channel/.htac* /var/www/public/channel/.htaccess \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
           /var/www/.tgitconfig /var/www/.travis.yml /var/www/*.md \
     &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
