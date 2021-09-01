@@ -32,7 +32,6 @@ RUN     apt-get -q -q update \
           libtheora-dev \
           libvorbis-dev \
           libvpx-dev \
-          mariadb-server \
           php7.4 \
           php7.4-curl \
           php7.4-gd \
