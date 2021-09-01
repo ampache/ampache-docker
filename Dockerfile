@@ -66,8 +66,6 @@ RUN     apt-get -q -q update \
     &&  apt-get -qq purge \
           libdvd-pkg \
           lsb-release \
-          python3 \
-          python3-minimal \
           software-properties-common \
           unzip \
           wget \
