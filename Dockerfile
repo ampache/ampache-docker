@@ -32,6 +32,7 @@ RUN     apt-get -q -q update \
           libtheora-dev \
           libvorbis-dev \
           libvpx-dev \
+          logrotate \
           php7.4 \
           php7.4-curl \
           php7.4-gd \
@@ -77,6 +78,7 @@ EXPOSE 80
 COPY run.sh inotifywatch.sh cron.sh apache2.sh ampache_cron.sh docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
 COPY data/config/ampache.cfg.* /var/tmp/
+COPY data/logrotate.d/* /etc/logrotate.d/
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN  chown www-data:www-data /var/tmp/ampache.cfg.* \
