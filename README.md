@@ -111,6 +111,24 @@ The automated builds for the official repo are now built for linux/amd64, linux/
 
 After installation you will need to setup a catalog. Make sure to use `/media` as the path where your media is located.
 
+## Themes
+
+By default Ampache only ships with one theme built-in located at `/var/www/public/themes/reborn`. We want to avoid mounting the whole `/themes` directory otherwise the reborn theme will not be updated when the Amapche image updates. It's best to make a copy of the existing theme and then we can mount it in the `/themes` directory as a new theme.
+
+Make sure that the container is already running then copy the current theme to a folder on the host:
+
+```shell
+docker run -d --name=ampache ampache/ampache
+docker cp ampache:/var/www/public/themes/reborn ./data/new-theme
+docker container stop ampache
+```
+
+Now make modifications to the theme and then start the container again this time mounting the new theme to the container:
+
+```shell
+docker run -d --name=ampache -v ./data/new-theme:/var/www/public/themes/new-theme
+```
+
 ## Thanks to
 
 * @ericfrederich for his original work
