@@ -75,7 +75,7 @@ RUN     apt-get -q -q update \
           unzip \
     &&  apt-get -qq autoremove
 
-VOLUME ["/etc/mysql", "/var/lib/mysql", "/media", "/var/www/config", "/var/www/themes"]
+VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/www/config"]
 EXPOSE 80
 
 COPY run.sh inotifywatch.sh cron.sh apache2.sh mysql.sh create_mysql_admin_user.sh ampache_cron.sh docker-entrypoint.sh /usr/local/bin/
