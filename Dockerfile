@@ -72,7 +72,7 @@ RUN     apt-get -q -q update \
           wget \
     &&  apt-get -qq autoremove
 
-VOLUME ["/media", "/var/www/config", "/var/www/themes"]
+VOLUME ["/var/www/config"]
 EXPOSE 80
 
 COPY run.sh inotifywatch.sh cron.sh apache2.sh ampache_cron.sh docker-entrypoint.sh /usr/local/bin/
