@@ -135,7 +135,4 @@ docker run -d --name=ampache -v ./data/new-theme:/var/www/public/themes/new-them
 * @velocity303 and @goldy for the other ampache-docker inspiration
 * @kuzi-moto for bringing the image out of the dark ages
 
-## Current Release
-
-Ampache 5.1.0
 

@@ -2,7 +2,8 @@ FROM debian:stable
 LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
-ARG VERSION=5.1.0
+ENV MYSQL_PASS **Random**
+ARG VERSION=5.1.1
 
 RUN     apt-get -q -q update \
     &&  apt-get -q -q -y install --no-install-recommends \
