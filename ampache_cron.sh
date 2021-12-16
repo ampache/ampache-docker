@@ -4,7 +4,7 @@ DOW=$(date +%u)
 HOUR=$(date +"%H")
 
 # catalog clean / add / gather art
-if [[ $HOUR = 07 ]] || [[ $HOUR = 22 ]]; then
+if [[ $HOUR = 22 ]]; then
   /usr/bin/php /var/www/bin/cli run:updateCatalog -cag
 fi
 # optimize DB on sunday
