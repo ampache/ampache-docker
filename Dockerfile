@@ -35,15 +35,14 @@ RUN     apt-get -q -q update \
           libvpx-dev \
           logrotate \
           mariadb-server \
-          php7.4 \
-          php7.4-curl \
-          php7.4-gd \
-          php7.4-intl \
-          php7.4-json \
-          php7.4-ldap \
-          php7.4-mysql \
-          php7.4-xml \
-          php7.4-zip \
+          php8.0 \
+          php8.0-curl \
+          php8.0-gd \
+          php8.0-intl \
+          php8.0-ldap \
+          php8.0-mysql \
+          php8.0-xml \
+          php8.0-zip \
           pwgen \
           supervisor \
           vorbis-tools \
