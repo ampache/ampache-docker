@@ -55,9 +55,9 @@ RUN     apt-get -q -q update \
     &&  a2enmod rewrite \
     &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/${VERSION}/ampache-${VERSION}_all.zip \
     &&  unzip /tmp/master.zip -d /var/www/ \
-    &&  mv /var/www/public/rest/.htac* /var/www/public/rest/.htaccess \
-    &&  mv /var/www/public/play/.htac* /var/www/public/play/.htaccess \
-    &&  mv /var/www/public/channel/.htac* /var/www/public/channel/.htaccess \
+    &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
+    &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
+    &&  cp -f /var/www/public/channel/.htaccess.dist /var/www/public/channel/.htaccess \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
           /var/www/.tgitconfig /var/www/.travis.yml /var/www/*.md \
     &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
