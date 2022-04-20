@@ -59,9 +59,9 @@ RUN     apt-get -q -q update \
     &&  wget -q -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
     &&  unzip /tmp/develop.zip -d /tmp/ \
     &&  mv /tmp/ampache-develop/ /var/www/ \
-    &&  mv /var/www/public/rest/.htac* /var/www/public/rest/.htaccess \
-    &&  mv /var/www/public/play/.htac* /var/www/public/play/.htaccess \
-    &&  mv /var/www/public/channel/.htac* /var/www/public/channel/.htaccess \
+    &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
+    &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
+    &&  cp -f /var/www/public/channel/.htaccess.dist /var/www/public/channel/.htaccess \
     &&  cd /var/www \
     &&  wget -q -O ./composer https://getcomposer.org/download/latest-stable/composer.phar \
     &&  chmod +x ./composer \
