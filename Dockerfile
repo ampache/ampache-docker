@@ -86,11 +86,11 @@ RUN     apt-get -q -q update \
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/www/config"]
 EXPOSE 80
 
-COPY run.sh inotifywatch.sh cron.sh apache2.sh mysql.sh create_mysql_admin_user.sh ampache_cron.sh docker-entrypoint.sh /usr/local/bin/
+COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/mysql.sh data/bin/create_mysql_admin_user.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
 COPY data/config/ampache.cfg.* /var/tmp/
 COPY data/logrotate.d/* /etc/logrotate.d/
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY data/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN  chown www-data:www-data /var/tmp/ampache.cfg.* \
     &&  chmod +x /usr/local/bin/*.sh
