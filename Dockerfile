@@ -76,7 +76,7 @@ RUN     apt-get -q -q update \
 VOLUME ["/var/www/config"]
 EXPOSE 80
 
-COPY data/bin/run.sh data/bin/inotifywatch.sh data/bin/cron.sh data/bin/apache2.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
+COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
 COPY data/config/ampache.cfg.* /var/tmp/
 COPY data/logrotate.d/* /etc/logrotate.d/
