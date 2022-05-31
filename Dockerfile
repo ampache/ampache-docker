@@ -33,6 +33,7 @@ RUN     apt-get -q -q update \
           libtheora-dev \
           libvorbis-dev \
           libvpx-dev \
+          locales \
           logrotate \
           mariadb-server \
           php8.0 \
@@ -75,6 +76,8 @@ RUN     apt-get -q -q update \
     &&  chmod -R 775 /var/www \
     &&  rm -rf /var/cache/* /tmp/* /var/tmp/* /root/.cache /var/www/docs /var/www/.tx \
     &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
+    &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
+    &&  locale-gen \
     &&  apt-get -qq purge \
           libdvd-pkg \
           lsb-release \
