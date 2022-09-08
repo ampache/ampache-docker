@@ -62,7 +62,6 @@ RUN     apt-get -q -q update \
     &&  mv /tmp/ampache-develop/ /var/www/ \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
-    &&  cp -f /var/www/public/channel/.htaccess.dist /var/www/public/channel/.htaccess \
     &&  cd /var/www \
     &&  wget -q -O ./composer https://getcomposer.org/download/latest-stable/composer.phar \
     &&  chmod +x ./composer \
