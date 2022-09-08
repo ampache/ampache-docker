@@ -3,7 +3,7 @@ LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV MYSQL_PASS **Random**
-ARG VERSION=5.4.1
+ARG VERSION=5.5.1
 
 RUN     apt-get -q -q update \
     &&  apt-get -q -q -y install --no-install-recommends \
@@ -36,14 +36,14 @@ RUN     apt-get -q -q update \
           locales \
           logrotate \
           mariadb-server \
-          php8.0 \
-          php8.0-curl \
-          php8.0-gd \
-          php8.0-intl \
-          php8.0-ldap \
-          php8.0-mysql \
-          php8.0-xml \
-          php8.0-zip \
+          php8.1 \
+          php8.1-curl \
+          php8.1-gd \
+          php8.1-intl \
+          php8.1-ldap \
+          php8.1-mysql \
+          php8.1-xml \
+          php8.1-zip \
           pwgen \
           supervisor \
           vorbis-tools \
