@@ -3,7 +3,7 @@ LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV MYSQL_PASS **Random**
-ARG VERSION=5.5.6
+ARG VERSION=6.0.0
 
 RUN     apt-get -q -q update \
     &&  apt-get -q -q -y install --no-install-recommends \
@@ -36,14 +36,14 @@ RUN     apt-get -q -q update \
           locales \
           logrotate \
           mariadb-server \
-          php8.1 \
-          php8.1-curl \
-          php8.1-gd \
-          php8.1-intl \
-          php8.1-ldap \
-          php8.1-mysql \
-          php8.1-xml \
-          php8.1-zip \
+          php8.2 \
+          php8.2-curl \
+          php8.2-gd \
+          php8.2-intl \
+          php8.2-ldap \
+          php8.2-mysql \
+          php8.2-xml \
+          php8.2-zip \
           pwgen \
           supervisor \
           vorbis-tools \
@@ -57,9 +57,9 @@ RUN     apt-get -q -q update \
     &&  chown -R www-data:www-data /var/log/ampache \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
-    &&  wget -q -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
-    &&  unzip /tmp/develop.zip -d /tmp/ \
-    &&  mv /tmp/ampache-develop/ /var/www/ \
+    &&  wget -q -O /tmp/patch6.zip https://github.com/ampache/ampache/archive/refs/heads/patch6.zip \
+    &&  unzip /tmp/patch6.zip -d /tmp/ \
+    &&  mv /tmp/ampache-patch6/ /var/www/ \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
     &&  cd /var/www \
@@ -90,7 +90,7 @@ EXPOSE 80
 
 COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/mysql.sh data/bin/create_mysql_admin_user.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
-COPY data/apache2/php.ini /etc/php/8.1/apache2/
+COPY data/apache2/php.ini /etc/php/8.2/apache2/
 COPY data/config/ampache.cfg.* /var/tmp/
 COPY data/logrotate.d/* /etc/logrotate.d/
 COPY data/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
