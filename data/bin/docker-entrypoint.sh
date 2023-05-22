@@ -2,12 +2,15 @@
 
 set -e
 
-if [ -n "$GID" ]; then
-    groupmod -o -g "$GID" www-data
-fi
+if [ -n "$UID" ] && [ -n "$GID" ] && [ "$(id -u)" = '0' ]; then
+    userdel www-data
+    groupadd -o -g "$GID" www-data
+    useradd -o -M -u "$UID" -g "$GID" www-data
 
-if [ -n "$UID" ]; then
-    usermod -o -u "$UID" www-data
+    userdel mysql
+    groupadd -o -g "$GID" mysql
+    useradd -o -M -u "$UID" -g "$GID" mysql
+    chown -R mysql:mysql /run/mysqld
 fi
 
 # Re-set permission to the `www-data` user if current user is root
