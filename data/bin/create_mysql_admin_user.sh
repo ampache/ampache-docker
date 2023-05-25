@@ -1,6 +1,11 @@
 #!/bin/bash
 
-mysqld_safe &
+if [ "$(id -u)" = '0' ]; then
+    user=www-data
+else
+    user=$(id -u)
+fi
+mysqld_safe --user $user &
 sleep 5
 
 RET=1
