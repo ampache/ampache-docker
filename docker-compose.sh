@@ -16,10 +16,10 @@ fi
 
 # add missing files
 if [ ! -f ./data/config/ampache.cfg.php.dist ]; then
-  wget -q -O ./data/config/ampache.cfg.php.dist https://raw.githubusercontent.com/ampache/ampache-docker/preview/data/config/ampache.cfg.php.dist
+  wget -q -O ./data/config/ampache.cfg.php.dist https://raw.githubusercontent.com/ampache/ampache-docker/develop/data/config/ampache.cfg.php.dist
 fi
 if [ ! -f ./data/sites-enabled/001-ampache.conf ]; then
-  wget -q -O ./data/config/ampache.cfg.php.dist https://raw.githubusercontent.com/ampache/ampache-docker/preview/data/sites-enabled/001-ampache.conf
+  wget -q -O ./data/config/ampache.cfg.php.dist https://raw.githubusercontent.com/ampache/ampache-docker/develop/data/sites-enabled/001-ampache.conf
 fi
 
 # set permissions
