@@ -54,21 +54,15 @@ For more advanced users a few different image variants are available.
 
 ### `ampache:version`
 
-![travis status](https://travis-ci.org/ampache/ampache-docker.svg?branch=master)
-
 **Recommended**: Specifies a particular version from the Ampache master (stable) branch. Pinning Ampache to a specific version can prevent issues where you unexpectedly update a major version of Ampache with breaking changes you're not aware of.
 
 Use something like [Diun](https://crazymax.dev/diun/) to monitor for updates to the image.
 
 ### `ampache:latest`
 
-![travis status](https://travis-ci.org/ampache/ampache-docker.svg?branch=master)
-
 Pulls the most recent image from the Master (stable) branch
 
 ### `ampache:develop`
-
-![travis status](https://travis-ci.org/ampache/ampache-docker.svg?branch=develop)
 
 Pulls the most recent image from the Develop branch. This is generally safe to run but can break occasionally. Contains the latest features and updates.
 
@@ -76,13 +70,9 @@ Pulls the most recent image from the Develop branch. This is generally safe to r
 
 ### `ampache:nosql`
 
-![travis status](https://travis-ci.org/ampache/ampache-docker.svg?branch=nosql)
-
 For advanced users, this provides an image without a MySQL server built-in. You must provide your own MySQL server.
 
 ### `ampache:nosql<version>`
-
-![travis status](https://travis-ci.org/ampache/ampache-docker.svg?branch=nosql)
 
 The `nosql` image pinned to a specific version.
 
@@ -134,5 +124,4 @@ docker run -d --name=ampache -v ./data/new-theme:/var/www/public/themes/new-them
 * @ericfrederich for his original work
 * @velocity303 and @goldy for the other ampache-docker inspiration
 * @kuzi-moto for bringing the image out of the dark ages
-
 
