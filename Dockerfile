@@ -5,21 +5,16 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV MYSQL_PASS **Random**
 ARG VERSION=6.0.0
 
-RUN     apt-get -q -q update \
-    &&  apt-get -q -q -y install --no-install-recommends \
-          software-properties-common \
-          wget \
-    &&  apt-add-repository contrib \
-    &&  apt-add-repository non-free \
-    &&  apt-get update \
-    &&  apt-get -q -q -y install --no-install-recommends libdvd-pkg \
-    &&  dpkg-reconfigure libdvd-pkg \
-    &&  apt-get -qq install apt-transport-https lsb-release ca-certificates curl \
+RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/20230612T000000Z\nURIs: http://deb.debian.org/debian\nSuites: stable stable-updates\nComponents: main contrib non-free\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n\nTypes: deb\n# http://snapshot.debian.org/archive/debian-security/20230612T000000Z\nURIs: http://deb.debian.org/debian-security\nSuites: stable-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n" > /etc/apt/sources.list.d/debian.sources' \
+    &&  apt-get -q -q update \
+    &&  apt-get -q -q -y install --no-install-recommends wget software-properties-common libdvd-pkg \
+    &&  apt-get -q -q -y install apt-transport-https lsb-release ca-certificates curl \
     &&  wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
     &&  sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' \
     &&  apt-get update \
-    &&  apt-get -qq install --no-install-recommends \
+    &&  apt-get -q -q -y install --no-install-recommends \
           apache2 \
+          beets \
           cron \
           ffmpeg \
           flac \
@@ -77,13 +72,16 @@ RUN     apt-get -q -q update \
     &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     &&  locale-gen \
-    &&  apt-get -qq purge \
+    &&  apt-get -q -q purge \
+          build-essential \
+          debhelper-compat \
           libdvd-pkg \
           lsb-release \
           software-properties-common \
           git \
           unzip \
-    &&  apt-get -qq autoremove
+          wget \
+    &&  apt-get -q -q autoremove
 
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/www/config"]
 EXPOSE 80
