@@ -101,6 +101,15 @@ The automated builds for the official repo are now built for linux/amd64, linux/
 
 After installation you will need to setup a catalog. Make sure to use `/media` as the path where your media is located.
 
+## Set the local_web_path
+
+This applies if Ampache is running behind a reverse proxy. The following are typical error messages:
+
+(Ampache\Module\Api\Subsonic_Api) -> Stream error: 
+(Ampache\Module\Api\Subsonic_Api) -> Stream error: The requested URL returned error: 404 Not Found
+
+In ampache.cfg.php set local_web_path to localhost. There are various discussions and issues with more detail on this, see for example: https://github.com/ampache/ampache/issues/1639
+
 ## Themes
 
 By default Ampache only ships with one theme built-in located at `/var/www/public/themes/reborn`. We want to avoid mounting the whole `/themes` directory otherwise the reborn theme will not be updated when the Amapche image updates. It's best to make a copy of the existing theme and then we can mount it in the `/themes` directory as a new theme.
