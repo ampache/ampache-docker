@@ -54,21 +54,15 @@ For more advanced users a few different image variants are available.
 
 ### `ampache:version`
 
-![travis status](https://travis-ci.org/ampache/ampache-docker.svg?branch=master)
-
 **Recommended**: Specifies a particular version from the Ampache master (stable) branch. Pinning Ampache to a specific version can prevent issues where you unexpectedly update a major version of Ampache with breaking changes you're not aware of.
 
 Use something like [Diun](https://crazymax.dev/diun/) to monitor for updates to the image.
 
 ### `ampache:latest`
 
-![travis status](https://travis-ci.org/ampache/ampache-docker.svg?branch=master)
-
 Pulls the most recent image from the Master (stable) branch
 
 ### `ampache:develop`
-
-![travis status](https://travis-ci.org/ampache/ampache-docker.svg?branch=develop)
 
 Pulls the most recent image from the Develop branch. This is generally safe to run but can break occasionally. Contains the latest features and updates.
 
@@ -76,13 +70,9 @@ Pulls the most recent image from the Develop branch. This is generally safe to r
 
 ### `ampache:nosql`
 
-![travis status](https://travis-ci.org/ampache/ampache-docker.svg?branch=nosql)
-
 For advanced users, this provides an image without a MySQL server built-in. You must provide your own MySQL server.
 
 ### `ampache:nosql<version>`
-
-![travis status](https://travis-ci.org/ampache/ampache-docker.svg?branch=nosql)
 
 The `nosql` image pinned to a specific version.
 
@@ -111,6 +101,15 @@ The automated builds for the official repo are now built for linux/amd64, linux/
 
 After installation you will need to setup a catalog. Make sure to use `/media` as the path where your media is located.
 
+## Set the local_web_path
+
+This applies if Ampache is running behind a reverse proxy. The following are typical error messages:
+
+(Ampache\Module\Api\Subsonic_Api) -> Stream error: 
+(Ampache\Module\Api\Subsonic_Api) -> Stream error: The requested URL returned error: 404 Not Found
+
+In ampache.cfg.php set local_web_path to localhost. There are various discussions and issues with more detail on this, see for example: https://github.com/ampache/ampache/issues/1639
+
 ## Themes
 
 By default Ampache only ships with one theme built-in located at `/var/www/public/themes/reborn`. We want to avoid mounting the whole `/themes` directory otherwise the reborn theme will not be updated when the Amapche image updates. It's best to make a copy of the existing theme and then we can mount it in the `/themes` directory as a new theme.
@@ -134,5 +133,4 @@ docker run -d --name=ampache -v ./data/new-theme:/var/www/public/themes/new-them
 * @ericfrederich for his original work
 * @velocity303 and @goldy for the other ampache-docker inspiration
 * @kuzi-moto for bringing the image out of the dark ages
-
 
