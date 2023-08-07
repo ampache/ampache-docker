@@ -9,9 +9,9 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  apt-get -q -q update \
     &&  apt-get -q -q -y install --no-install-recommends wget software-properties-common libdvd-pkg \
     &&  apt-get -q -q -y install apt-transport-https lsb-release ca-certificates curl \
-    &&  wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
-    &&  sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' \
-    &&  apt-get update \
+    &&  curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg \
+    &&  sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' \
+    &&  apt-get update --allow-unauthenticated \
     &&  apt-get -q -q -y install --no-install-recommends \
           apache2 \
           cron \
