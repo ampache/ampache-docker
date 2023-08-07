@@ -7,11 +7,8 @@ ARG VERSION=6.0.0
 
 RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/20230612T000000Z\nURIs: http://deb.debian.org/debian\nSuites: stable stable-updates\nComponents: main contrib non-free\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n\nTypes: deb\n# http://snapshot.debian.org/archive/debian-security/20230612T000000Z\nURIs: http://deb.debian.org/debian-security\nSuites: stable-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n" > /etc/apt/sources.list.d/debian.sources' \
     &&  apt-get -q -q update \
-    &&  apt-get -q -q -y install --no-install-recommends wget software-properties-common libdvd-pkg \
-    &&  apt-get -q -q -y install apt-transport-https lsb-release ca-certificates curl \
-    &&  curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg \
-    &&  sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' \
-    &&  apt-get update --allow-unauthenticated \
+    &&  apt-get -q -q -y install --no-install-recommends wget curl software-properties-common libdvd-pkg \
+    &&  apt-get update \
     &&  apt-get -q -q -y install --no-install-recommends \
           apache2 \
           cron \
@@ -73,7 +70,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  locale-gen \
     &&  apt-get -qq purge \
           libdvd-pkg \
-          lsb-release \
           software-properties-common \
           git \
           unzip \
