@@ -2,6 +2,14 @@
 
 Docker image for Ampache, a web based audio/video streaming application and file manager allowing you to access your music & videos from anywhere, using almost any internet enabled device.
 
+## NEWS
+
+Ampache 5.6.2 had to upgrade from Debian Bullseye to Bookworm.
+
+MariaDB has been upgraded and has already caused one issue so far.
+
+Have a look at https://github.com/ampache/ampache-docker/issues/102#issuecomment-1640956439 in issue #102 for information about how it was solved when there was an error during the upgrade.
+
 ## How to use this image
 
 This section covers two methods for running Ampache, first with the `docker run` command, and then using `docker-compose`.
