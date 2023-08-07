@@ -2,6 +2,14 @@
 
 Docker image for Ampache, a web based audio/video streaming application and file manager allowing you to access your music & videos from anywhere, using almost any internet enabled device.
 
+## NEWS
+
+Ampache 5.6.2 had to upgrade from Debian Bullseye to Bookworm.
+
+MariaDB has been upgraded and has already caused one issue so far.
+
+Have a look at https://github.com/ampache/ampache-docker/issues/102#issuecomment-1640956439 in issue #102 for information about how it was solved when there was an error during the upgrade.
+
 ## How to use this image
 
 This section covers two methods for running Ampache, first with the `docker run` command, and then using `docker-compose`.
@@ -100,6 +108,15 @@ The automated builds for the official repo are now built for linux/amd64, linux/
     2. Click [Return to main page] to login using previously entered credentials
 
 After installation you will need to setup a catalog. Make sure to use `/media` as the path where your media is located.
+
+## Set the local_web_path
+
+This applies if Ampache is running behind a reverse proxy. The following are typical error messages:
+
+(Ampache\Module\Api\Subsonic_Api) -> Stream error: 
+(Ampache\Module\Api\Subsonic_Api) -> Stream error: The requested URL returned error: 404 Not Found
+
+In ampache.cfg.php set local_web_path to localhost. There are various discussions and issues with more detail on this, see for example: https://github.com/ampache/ampache/issues/1639
 
 ## Themes
 
