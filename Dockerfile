@@ -50,7 +50,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  unzip /tmp/master.zip -d /var/www/ \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
-    &&  cp -f /var/www/public/channel/.htaccess.dist /var/www/public/channel/.htaccess \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
           /var/www/.tgitconfig /var/www/.travis.yml /var/www/*.md \
     &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
