@@ -40,6 +40,7 @@ This automatically creates the following bind mounts:
 * `./data/mysql` mounted at `/var/lib/mysql` for persistent MySQL storage
 * `./data/config` mounted at `/var/www/config` for persistent Ampache configuration
 * `./data/log` mounted at `/var/log/ampache` for debug logs
+* Optional: `./data/themes` mounted at `/var/www/themes` for using your own themes.
 
 ### Permissions
 
