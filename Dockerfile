@@ -70,12 +70,13 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  apt-get -qq autoremove
 
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/www/config"]
-EXPOSE 80
+EXPOSE 4050
 
 COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/mysql.sh data/bin/create_mysql_admin_user.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
 COPY data/apache2/php.ini /etc/php/8.2/apache2/
 COPY data/config/ampache.cfg.* /var/tmp/
+COPY data/config/ports.conf /etc/apache2/
 COPY data/logrotate.d/* /etc/logrotate.d/
 COPY data/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
