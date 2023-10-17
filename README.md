@@ -43,7 +43,7 @@ This automatically creates the following bind mounts:
 
 ### Permissions
 
-In the container the webserver runs as the http user (UID and GID 33). If you created the directories manually, it is important to ensure that the Ampache Configuration, and log directories are readable and writeable by that user.
+If not specified, the webserver in the container runs as the http user (UID and GID 33). If you created the directories manually, it is important to ensure that the Ampache Configuration, and log directories are readable and writeable by that user.
 
 ```bash
 chown 33:33 ./data/config -R
@@ -55,6 +55,8 @@ Optionally, the media directory should be writable as if you wish to allow uploa
 ```bash
 chgrp 33 ./data/media && chmod g+w ./data/media
 ```
+
+If you need another `UID` or `GID` you can specify them via the corresponding environment variables.
 
 ## Image Variants
 
