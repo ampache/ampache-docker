@@ -13,6 +13,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  apt-get update \
     &&  apt-get -q -q -y install --no-install-recommends \
           apache2 \
+          beets \
           cron \
           ffmpeg \
           flac \

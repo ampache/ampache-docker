@@ -8,7 +8,7 @@ Ampache 5.6.2 had to upgrade from Debian Bullseye to Bookworm.
 
 MariaDB has been upgraded and has already caused one issue so far.
 
-Have a look at https://github.com/ampache/ampache-docker/issues/102#issuecomment-1640956439 in issue #102 for information about how it was solved when there was an error during the upgrade.
+Have a look at https://github.com/ampache/ampache-docker/issues/102#issuecomment-1640956439 for information about how it was solved when there was an error during the upgrade.
 
 ## How to use this image
 
