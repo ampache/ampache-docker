@@ -1,3 +1,8 @@
+FROM golang:1.19 AS build-supercronic-stage
+
+RUN git clone https://github.com/aptible/supercronic.git /tmp/supercronic
+RUN cd /tmp/supercronic && CGO_ENABLED=0 GOOS=linux go build
+
 FROM debian:stable
 LABEL maintainer="lachlan-00"
 
@@ -59,6 +64,8 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
     &&  chown -R www-data:www-data /var/www \
     &&  chmod -R 775 /var/www \
+    &&  sed -i 's#/var/run/apache2#/tmp/apache2#' /etc/apache2/envvars \
+    &&  sed -i 's#/var/log/apache2#/var/log/ampache#' /etc/apache2/envvars \
     &&  rm -rf /var/cache/* /tmp/* /var/tmp/* /root/.cache /var/www/docs /var/www/.tx \
     &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
@@ -79,9 +86,12 @@ COPY data/apache2/php.ini /etc/php/8.2/apache2/
 COPY data/config/ampache.cfg.* /var/tmp/
 COPY data/logrotate.d/* /etc/logrotate.d/
 COPY data/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY data/mysql/my.cnf /etc/mysql/my.cnf
+COPY --from=build-supercronic-stage /tmp/supercronic/supercronic /usr/local/bin/supercronic
+COPY data/supercronic/crontab /etc/crontab
 
 RUN  chown www-data:www-data /var/tmp/ampache.cfg.* \
     &&  chmod +x /usr/local/bin/*.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["run.sh"]
+CMD ["/usr/local/bin/run.sh"]

@@ -1,0 +1,1 @@
+30 * * * *   /usr/local/bin/ampache_cron.sh

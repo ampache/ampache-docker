@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cron -f
+exec supercronic /etc/crontab
