@@ -62,8 +62,8 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chmod +x ./composer \
     &&  ./composer install --prefer-dist --no-interaction \
     &&  ./composer clear-cache \
-    &&  ./npm install \
-    &&  ./npm cache clean --force \
+    &&  npm install \
+    &&  npm cache clean --force \
     &&  rm ./composer \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
           /var/www/.tgitconfig /var/www/.travis.yml /var/www/*.md \
@@ -81,6 +81,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           lsb-release \
           software-properties-common \
           git \
+          npm \
           unzip \
           wget \
     &&  apt-get -q -q autoremove
