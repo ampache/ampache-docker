@@ -30,6 +30,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           locales \
           logrotate \
           mariadb-server \
+          npm \
           php8.2 \
           php8.2-curl \
           php8.2-gd \
@@ -61,6 +62,8 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chmod +x ./composer \
     &&  ./composer install --prefer-dist --no-interaction \
     &&  ./composer clear-cache \
+    &&  ./npm install \
+    &&  ./npm cache clean --force \
     &&  rm ./composer \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
           /var/www/.tgitconfig /var/www/.travis.yml /var/www/*.md \
