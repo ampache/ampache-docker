@@ -2,7 +2,7 @@ version: '3'
 
 services:
   ampache:
-    image: ampache/ampache:nosql
+    image: ampache/ampache:nosql-develop
     container_name: ampache
     restart: unless-stopped
     ports:

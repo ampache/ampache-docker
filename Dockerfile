@@ -3,7 +3,7 @@ LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV MYSQL_PASS **Random**
-ARG VERSION=5.6.1
+ARG VERSION=6.0.0
 
 RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/20230612T000000Z\nURIs: http://deb.debian.org/debian\nSuites: stable stable-updates\nComponents: main contrib non-free\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n\nTypes: deb\n# http://snapshot.debian.org/archive/debian-security/20230612T000000Z\nURIs: http://deb.debian.org/debian-security\nSuites: stable-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n" > /etc/apt/sources.list.d/debian.sources' \
     &&  apt-get -q -q update \
@@ -29,6 +29,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           libvpx-dev \
           locales \
           logrotate \
+          npm \
           php8.2 \
           php8.2-curl \
           php8.2-gd \
@@ -47,10 +48,19 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/log/ampache \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
-    &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/${VERSION}/ampache-${VERSION}_all_php8.2.zip \
-    &&  unzip /tmp/master.zip -d /var/www/ \
+    &&  wget -q -O /tmp/patch7.zip https://github.com/ampache/ampache/archive/refs/heads/patch7.zip \
+    &&  unzip /tmp/patch7.zip -d /tmp/ \
+    &&  mv /tmp/ampache-patch7/ /var/www/ \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
+    &&  cd /var/www \
+    &&  wget -q -O ./composer https://getcomposer.org/download/latest-stable/composer.phar \
+    &&  chmod +x ./composer \
+    &&  ./composer install --prefer-dist --no-interaction \
+    &&  ./composer clear-cache \
+    &&  npm install \
+    &&  npm cache clean --force \
+    &&  rm ./composer \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
           /var/www/.tgitconfig /var/www/.travis.yml /var/www/*.md \
     &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
@@ -60,13 +70,17 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     &&  locale-gen \
-    &&  apt-get -qq purge \
+    &&  apt-get -q -q purge \
+          build-essential \
+          debhelper-compat \
           libdvd-pkg \
           lsb-release \
           software-properties-common \
+          git \
+          npm \
           unzip \
           wget \
-    &&  apt-get -qq autoremove
+    &&  apt-get -q -q autoremove
 
 VOLUME ["/var/www/config"]
 EXPOSE 80
