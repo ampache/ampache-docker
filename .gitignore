@@ -1,5 +1,4 @@
 data/config/ampache.cfg.php
 data/log/*
-data/mysql/*
 data/media/*
 nohup.out
