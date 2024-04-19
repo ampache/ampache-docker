@@ -30,11 +30,6 @@ config_version = 71
 ; DEFAULT: composer
 ;composer_binary_path = "composer"
 
-; This value allows to override the npm binary path to distinguish between multiple npm versions
-; Either a binary name in $PATH as well as a fully qualified path is possible
-; DEFAULT: npm
-;npm_binary_path = "npm"
-
 ; We sometimes need to talk and will show a warning to admin users
 ; Enable this setting if you don't want to see warnings (When we enable them)
 ; DEFAULT: "false"
@@ -174,7 +169,7 @@ session_cookiesecure = 0
 ; This defines which auth methods Auth will attempt to use and in which order.
 ; If auto_create isn't enabled the user must exist locally.
 ; DEFAULT: mysql
-; VALUES: mysql,ldap,http,pam,external
+; VALUES: mysql,ldap,http,pam,external,openid
 auth_methods = "mysql"
 
 ; External authentication
@@ -988,6 +983,15 @@ site_charset = "UTF-8"
 ; DEFAULT: member
 ;ldap_member_attribute = "member"
 ;ldap_member_attribute = "memberuid"
+
+;#########################################################
+; OpenID login info (optional)                           #
+;#########################################################
+
+; Requires specific OpenID Provider Authentication Policy
+; DEFAULT: none
+; VALUES: PAPE_AUTH_MULTI_FACTOR_PHYSICAL,PAPE_AUTH_MULTI_FACTOR,PAPE_AUTH_PHISHING_RESISTANT
+;openid_required_pape = ""
 
 ;#########################################################
 ; Public Registration settings, defaults to disabled     #
