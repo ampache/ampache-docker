@@ -80,7 +80,7 @@ COPY data/apache2/php.ini /etc/php/8.2/apache2/
 COPY data/logrotate.d/* /etc/logrotate.d/
 COPY data/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN  chown www-data:www-data /var/tmp/ampache.cfg.* \
+RUN  chown -R www-data:www-data /var/tmp/ampache.cfg.php.dist /var/www/config \
     &&  chmod +x /usr/local/bin/*.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
