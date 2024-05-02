@@ -58,6 +58,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  ./composer install --prefer-dist --no-interaction \
     &&  ./composer clear-cache \
     &&  npm install \
+    &&  npm run build \
     &&  npm cache clean --force \
     &&  rm ./composer \
     &&  cp -f /var/www/config/ampache.cfg.php.dist /var/tmp/ \
@@ -66,7 +67,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
     &&  chown -R www-data:www-data /var/www \
     &&  chmod -R 775 /var/www \
-    &&  rm -rf /var/cache/* /tmp/* /var/tmp/develop.zip /root/.cache /var/www/docs /var/www/.tx \
+    &&  rm -rf /var/cache/* /tmp/* /var/tmp/patch7.zip /root/.cache /var/www/docs /var/www/.tx \
     &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     &&  locale-gen \
