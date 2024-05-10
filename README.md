@@ -41,6 +41,14 @@ This automatically creates the following bind mounts:
 * `./data/config` mounted at `/var/www/config` for persistent Ampache configuration
 * `./data/log` mounted at `/var/log/ampache` for debug logs
 
+### Environment variables
+
+You can configure parts of the container using environment variables. When running with `docker run`, you can set an environment variable using the `-e` parameter; for example, `-e FOO=BAR` sets the environemnt variable `FOO` to bar. When using `docker-compose`, you can set environment variables using a `.env` file in this directory.
+
+Available environment variables are:
+
+* `DISABLE_INOTIFYWAIT_CLEAN`: If set to 1, disables the clean step on the directory monitor. This prevents Ampache from automatically cleaning files. If you are using a bind mount on an external storage, this may be desirable as it prevents Ampache from removing files if the external storage goes down.
+
 ### Permissions
 
 In the container the webserver runs as the http user (UID and GID 33). If you created the directories manually, it is important to ensure that the Ampache Configuration, and log directories are readable and writeable by that user.
