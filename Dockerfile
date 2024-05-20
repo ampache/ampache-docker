@@ -42,7 +42,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           vorbis-tools \
           zip \
           unzip \
-    &&  rm -rf /var/www/* /etc/apache2/sites-enabled/* /var/lib/apt/lists/* \
+    &&  rm -rf /var/www /etc/apache2/sites-enabled/* /var/lib/apt/lists/* \
     &&  mkdir -p /var/log/ampache \
     &&  chown -R www-data:www-data /var/log/ampache \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
