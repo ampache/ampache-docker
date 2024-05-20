@@ -16,6 +16,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           cron \
           ffmpeg \
           flac \
+          git \
           gosu \
           inotify-tools \
           lame \
