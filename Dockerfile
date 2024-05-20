@@ -54,7 +54,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  a2enmod rewrite \
     &&  wget -q -O /tmp/patch7.zip https://github.com/ampache/ampache/archive/refs/heads/patch7.zip \
     &&  unzip /tmp/patch7.zip -d /tmp/ \
-    &&  mv /tmp/ampache-patch7/ /var/www/ \
+    &&  mv -v /tmp/ampache-patch7 /var/www \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
     &&  cd /var/www \
