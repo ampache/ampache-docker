@@ -58,7 +58,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/www \
     &&  chmod -R 775 /var/www \
     &&  rm -rf /var/cache/* /tmp/* /var/tmp/master.zip /root/.cache /var/www/docs /var/www/.tx \
-    &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
+    &&  echo '%%CRON_TIME%%   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     &&  locale-gen \
     &&  apt-get -qq purge \
