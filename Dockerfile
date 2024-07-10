@@ -43,6 +43,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           vorbis-tools \
           zip \
           unzip \
+          git \
     &&  rm -rf /var/www /etc/apache2/sites-enabled/* /var/lib/apt/lists/* \
     &&  mkdir -p /var/log/ampache \
     &&  chown -R www-data:www-data /var/log/ampache \
@@ -66,6 +67,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           libdvd-pkg \
           lsb-release \
           software-properties-common \
+          git \
           unzip \
           wget \
     &&  apt-get -qq autoremove
