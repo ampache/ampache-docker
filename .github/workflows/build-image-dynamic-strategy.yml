@@ -3,10 +3,10 @@ name: Dynamic Docker Multi-Platform Build
 on:
   push:
     branches:
-      - oneflow-setup
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   generate-matrix:
