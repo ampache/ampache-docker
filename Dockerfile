@@ -77,7 +77,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     &&  locale-gen \
-    &&  apt-get -q -q purge \
+    &&  apt-get -qq purge \
           build-essential \
           debhelper-compat \
           libdvd-pkg \
@@ -87,7 +87,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           npm \
           unzip \
           wget \
-    &&  apt-get -q -q autoremove
+    &&  apt-get -qq autoremove
 
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/www/config"]
 EXPOSE 80
