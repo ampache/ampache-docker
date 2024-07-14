@@ -31,6 +31,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           locales \
           logrotate \
           mariadb-server \
+          npm \
           php8.2 \
           php8.2-curl \
           php8.2-gd \
@@ -62,6 +63,9 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chmod +x ./composer \
     &&  ./composer install --prefer-dist --no-interaction \
     &&  ./composer clear-cache \
+    &&  npm install \
+    &&  npm run build \
+    &&  npm cache clean --force \
     &&  rm ./composer \
     &&  cp -f /var/www/config/ampache.cfg.php.dist /var/tmp/ \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
@@ -74,11 +78,15 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     &&  locale-gen \
     &&  apt-get -qq purge \
+          build-essential \
+          debhelper-compat \
           libdvd-pkg \
           lsb-release \
           software-properties-common \
           git \
+          npm \
           unzip \
+          wget \
     &&  apt-get -qq autoremove
 
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/www/config"]
