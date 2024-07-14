@@ -60,6 +60,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  ./composer install --prefer-dist --no-interaction \
     &&  ./composer clear-cache \
     &&  npm install \
+    &&  npm run build \
     &&  npm cache clean --force \
     &&  rm ./composer \
     &&  cp -f /var/www/config/ampache.cfg.php.dist /var/tmp/ \
