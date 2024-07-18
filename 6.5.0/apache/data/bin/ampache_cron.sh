@@ -8,7 +8,7 @@ if [[ $HOUR = 22 ]]; then
   /usr/bin/php /var/www/bin/cli run:updateCatalog -cag
 fi
 # optimize DB on sunday
-if [[ $HOUR = 01 ]] && [[ $DOW = 6 ]]; then
+if [[ $HOUR = 01 ]] && [[ $DOW = 7 ]]; then
   /usr/bin/php /var/www/bin/cli run:updateCatalog -o
 fi
 
