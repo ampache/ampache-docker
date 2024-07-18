@@ -1,4 +1,4 @@
-# DO NOT EDIT: created by update_mantainer_version from Dockerfile-debian-aio.template 
+# DO NOT EDIT: created by update_maintainer_version from Dockerfile-debian-aio.template 
 FROM debian:bookworm
 LABEL maintainer="lachlan-00"
 

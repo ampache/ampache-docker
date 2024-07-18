@@ -164,7 +164,7 @@ function create_variant() {
 	mkdir -p "$dir"
 
 	template="Dockerfile-${base[$variant]}.template"
-	echo "# DO NOT EDIT: created by update_mantainer_version from $template " > "$dir/Dockerfile"
+	echo "# DO NOT EDIT: created by update_maintainer_version from $template " > "$dir/Dockerfile"
 	cat "$template" >> "$dir/Dockerfile"
 
 	# Replace the variables.
