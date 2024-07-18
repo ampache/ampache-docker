@@ -1,0 +1,54 @@
+name: Dynamic Docker Multi-Platform Build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  generate-matrix:
+    name: Generate Jobs
+    runs-on: ubuntu-latest
+    outputs:
+      strategy: ${{ steps.generate-jobs.outputs.strategy }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+  
+      - id: generate-jobs
+        name: Generate Jobs
+        run: |
+          strategy_content=""
+          versions=$(ls -d */ | grep '^[0-9]' | sed 's#/##')
+          for version in $versions; do
+            variants=$(cd $version; ls -d */ | sed 's#/##')
+            for variant in $variants; do
+              strategy_content="$strategy_content,{\"version\":\"$version\",\"variant\":\"$variant\"}"
+            done
+          done
+          strategy="{\"include\":[ ${strategy_content:1} ]}"
+          echo "strategy=$strategy" >> "$GITHUB_OUTPUT"
+          jq . <<<"$strategy" # sanity check / debugging aid
+  
+  
+  build:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.strategy) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Docker image for ${{ matrix.version }}-${{ matrix.variant }}
+        run: |
+          cd ${{ matrix.version }}/${{ matrix.variant }}
+          docker buildx build --platform linux/amd64,linux/arm64 -t odyssey/ampache:${{ matrix.version }}-${{ matrix.variant }} .
+          cd ../../
