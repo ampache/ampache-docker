@@ -1,4 +1,4 @@
-# DO NOT EDIT: created by update_maintainer_version from Dockerfile-debian.template 
+# DO NOT EDIT: created by update_maintainer_version from Dockerfile-debian-nosql.template 
 FROM debian:bookworm
 LABEL maintainer="lachlan-00"
 
@@ -48,7 +48,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/log/ampache \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
-    &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/6.5.0/ampache-6.5.0_all_php8.3.zip \
+    &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/6.4.0/ampache-6.4.0_all_php8.3.zip \
     &&  unzip /tmp/master.zip -d /var/www/ \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \

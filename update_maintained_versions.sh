@@ -24,8 +24,8 @@ min_version='6.4'
 
 # All Possible Variant
 variants=(
-    aio
-    apache
+    default
+    nosql
 )
 
 # Get All version of Ampache
@@ -55,8 +55,8 @@ declare -A crontab_int=(
 )
 
 declare -A base=(
-    [apache]='debian'
-    [aio]='debian-aio'
+    [default]='debian'
+    [nosql]='debian-nosql'
 )
 
 #
@@ -155,7 +155,7 @@ function create_variant() {
     local debianVersion=${debian_version[$version]-${debian_version[default]}}
     local phpVersion=${php_version[$version]-${php_version[default]}}
     local crontabInt=${crontab_int[$version]-${crontab_int[default]}}
-    local    url="https://github.com/ampache/ampache/releases/download/${version}/ampache-${version}_all_php${phpVersion}.zip"
+    local url="https://github.com/ampache/ampache/releases/download/${version}/ampache-${version}_all_php${phpVersion}.zip"
     local ascUrl="https://github.com/ampache/ampache/releases/download/${version}/ampache-${version}_all_php${phpVersion}.zip.asc"
     
     
@@ -170,6 +170,7 @@ function create_variant() {
     # Replace the variables.
     sed -ri -e '
         s/%%DEBIAN_VERSION%%/'"$debianVersion"'/g;
+        s/%%AMPACHE_VERSION%%/'"$ampacheVersion"'/g;
         s/%%PHP_VERSION%%/'"$phpVersion"'/g;
         s/%%VARIANT%%/'"$variant"'/g;
         s/%%VERSION%%/'"$fullversion"'/g;

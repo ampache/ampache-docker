@@ -1,11 +1,11 @@
-# DO NOT EDIT: created by update_maintainer_version from Dockerfile-debian-aio.template 
+# DO NOT EDIT: created by update_maintainer_version from Dockerfile-debian.template 
 FROM debian:bookworm
 LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV MYSQL_PASS **Random**
 ENV DISABLE_INOTIFYWAIT_CLEAN 0
-ARG VERSION=5.6.1
+ARG VERSION=bookworm
 
 RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/20230612T000000Z\nURIs: http://deb.debian.org/debian\nSuites: stable stable-updates\nComponents: main contrib non-free\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n\nTypes: deb\n# http://snapshot.debian.org/archive/debian-security/20230612T000000Z\nURIs: http://deb.debian.org/debian-security\nSuites: stable-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n" > /etc/apt/sources.list.d/debian.sources' \
     &&  apt-get -q -q update \
@@ -52,7 +52,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/log/ampache \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
-    &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/6.5.0/ampache-6.5.0_all_php8.3.zip \
+    &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/6.4.0/ampache-6.4.0_all_php8.3.zip \
     &&  unzip /tmp/master.zip -d /var/www/ \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
