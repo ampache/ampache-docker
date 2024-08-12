@@ -12,5 +12,5 @@ services:
       - ./data/log:/var/log/ampache
       - ./data/media:/media
       - ./data/mysql:/var/lib/mysql
-  environment:
-    DISABLE_INOTIFYWAIT_CLEAN: ${DISABLE_INOTIFYWAIT_CLEAN-0}
+    environment:
+      DISABLE_INOTIFYWAIT_CLEAN: ${DISABLE_INOTIFYWAIT_CLEAN-0}
