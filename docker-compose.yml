@@ -11,5 +11,5 @@ services:
       - ./data/config:/var/www/config
       - ./data/log:/var/log/ampache
       - ./data/media:/media
-  environment:
-    DISABLE_INOTIFYWAIT_CLEAN: ${DISABLE_INOTIFYWAIT_CLEAN-0}
+    environment:
+      DISABLE_INOTIFYWAIT_CLEAN: ${DISABLE_INOTIFYWAIT_CLEAN-0}
