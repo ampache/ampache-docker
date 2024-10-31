@@ -32,14 +32,14 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           logrotate \
           mariadb-server \
           npm \
-          php8.2 \
-          php8.2-curl \
-          php8.2-gd \
-          php8.2-intl \
-          php8.2-ldap \
-          php8.2-mysql \
-          php8.2-xml \
-          php8.2-zip \
+          php8.3 \
+          php8.3-curl \
+          php8.3-gd \
+          php8.3-intl \
+          php8.3-ldap \
+          php8.3-mysql \
+          php8.3-xml \
+          php8.3-zip \
           pwgen \
           supervisor \
           vorbis-tools \
@@ -94,7 +94,7 @@ EXPOSE 80
 
 COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/mysql.sh data/bin/create_mysql_admin_user.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
-COPY data/apache2/php.ini /etc/php/8.2/apache2/
+COPY data/apache2/php.ini /etc/php/8.3/apache2/
 COPY data/logrotate.d/* /etc/logrotate.d/
 COPY data/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
