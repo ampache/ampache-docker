@@ -58,6 +58,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  mv /tmp/ampache-develop/ /var/www/ \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
+    &&  cp -f /var/www/public/.htaccess.dist /var/www/public/.htaccess \
     &&  cd /var/www \
     &&  wget -q -O ./composer https://getcomposer.org/download/latest-stable/composer.phar \
     &&  chmod +x ./composer \
