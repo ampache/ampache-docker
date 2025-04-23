@@ -2,8 +2,8 @@ FROM debian:stable
 LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV DISABLE_INOTIFYWAIT_CLEAN 0
-ARG VERSION=7.0.0
+ENV DISABLE_INOTIFYWAIT_CLEAN=0
+ARG VERSION=7.4.1
 
 RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/20230612T000000Z\nURIs: http://deb.debian.org/debian\nSuites: stable stable-updates\nComponents: main contrib non-free\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n\nTypes: deb\n# http://snapshot.debian.org/archive/debian-security/20230612T000000Z\nURIs: http://deb.debian.org/debian-security\nSuites: stable-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n" > /etc/apt/sources.list.d/debian.sources' \
     &&  apt-get -q -q update \
@@ -31,14 +31,14 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           locales \
           logrotate \
           npm \
-          php8.2 \
-          php8.2-curl \
-          php8.2-gd \
-          php8.2-intl \
-          php8.2-ldap \
-          php8.2-mysql \
-          php8.2-xml \
-          php8.2-zip \
+          php8.3 \
+          php8.3-curl \
+          php8.3-gd \
+          php8.3-intl \
+          php8.3-ldap \
+          php8.3-mysql \
+          php8.3-xml \
+          php8.3-zip \
           pwgen \
           supervisor \
           vorbis-tools \
@@ -74,7 +74,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     &&  locale-gen \
-    &&  apt-get -q -q purge \
+    &&  apt-get -qq purge \
           build-essential \
           debhelper-compat \
           libdvd-pkg \
@@ -84,14 +84,14 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           npm \
           unzip \
           wget \
-    &&  apt-get -q -q autoremove
+    &&  apt-get -qq autoremove
 
 VOLUME ["/var/www/config"]
 EXPOSE 80
 
 COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
-COPY data/apache2/php.ini /etc/php/8.2/apache2/
+COPY data/apache2/php.ini /etc/php/8.3/apache2/
 COPY data/logrotate.d/* /etc/logrotate.d/
 COPY data/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
