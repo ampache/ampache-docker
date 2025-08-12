@@ -66,7 +66,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  apt-get -qq purge \
           libdvd-pkg \
           lsb-release \
-          software-properties-common \
           git \
           unzip \
           wget \
