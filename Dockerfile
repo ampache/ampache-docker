@@ -79,7 +79,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           debhelper-compat \
           libdvd-pkg \
           lsb-release \
-          software-properties-common \
           git \
           npm \
           unzip \
