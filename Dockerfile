@@ -8,7 +8,7 @@ ARG VERSION=7.4.1
 
 RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/20230612T000000Z\nURIs: http://deb.debian.org/debian\nSuites: stable stable-updates\nComponents: main contrib non-free\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n\nTypes: deb\n# http://snapshot.debian.org/archive/debian-security/20230612T000000Z\nURIs: http://deb.debian.org/debian-security\nSuites: stable-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n" > /etc/apt/sources.list.d/debian.sources' \
     &&  apt-get -q -q update \
-    &&  apt-get -q -q -y install --no-install-recommends wget lsb-release ca-certificates curl software-properties-common libdvd-pkg \
+    &&  apt-get -q -q -y install --no-install-recommends wget lsb-release ca-certificates curl libdvd-pkg \
     &&  curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg \
     &&  sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php2.list' \
     &&  apt-get update \
@@ -33,14 +33,14 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           logrotate \
           mariadb-server \
           npm \
-          php8.2 \
-          php8.2-curl \
-          php8.2-gd \
-          php8.2-intl \
-          php8.2-ldap \
-          php8.2-mysql \
-          php8.2-xml \
-          php8.2-zip \
+          php8.4 \
+          php8.4-curl \
+          php8.4-gd \
+          php8.4-intl \
+          php8.4-ldap \
+          php8.4-mysql \
+          php8.4-xml \
+          php8.4-zip \
           pwgen \
           supervisor \
           vorbis-tools \
@@ -94,7 +94,7 @@ EXPOSE 80
 
 COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/mysql.sh data/bin/create_mysql_admin_user.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
-COPY data/apache2/php.ini /etc/php/8.2/apache2/
+COPY data/apache2/php.ini /etc/php/8.4/apache2/
 COPY data/logrotate.d/* /etc/logrotate.d/
 COPY data/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
