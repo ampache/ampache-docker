@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec mysqld_safe --syslog
+exec /usr/bin/mariadbd-safe --syslog
