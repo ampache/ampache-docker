@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec mariadbd-safe --syslog
+exec /usr/bin/mariadbd-safe --syslog
