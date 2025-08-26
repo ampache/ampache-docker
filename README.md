@@ -4,11 +4,15 @@ Docker image for Ampache, a web based audio/video streaming application and file
 
 ## NEWS
 
-Ampache 5.6.2 had to upgrade from Debian Bullseye to Bookworm.
+Debian has released a new stable version and containers are updated to match.
 
-MariaDB has been upgraded and has already caused one issue so far.
+* Trixie uses PHP 8.4 and MariaDB has been updated to the latest LTS version.
+* The UID and GID of mysql has changed and this [commit](https://github.com/ampache/ampache-docker/commit/1020db4855d641b938560b90c513aa667c6f5df2) checks that your ID's match the container ID's.
+* The included `php.ini` file has been updated so you may need to update yours depending on your changes.
 
-Have a look at https://github.com/ampache/ampache-docker/issues/102#issuecomment-1640956439 for information about how it was solved when there was an error during the upgrade.
+For the Debian upgrade to Bookworm MariaDB upgrades caused one issue.
+
+Have a look at [comment](https://github.com/ampache/ampache-docker/issues/102#issuecomment-1640956439) for information about how it was solved when there was an error during the upgrade.
 
 ## How to use this image
 
