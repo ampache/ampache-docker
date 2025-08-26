@@ -52,6 +52,38 @@ You can configure parts of the container using environment variables. When runni
 Available environment variables are:
 
 * `DISABLE_INOTIFYWAIT_CLEAN`: If set to 1, disables the clean step on the directory monitor. This prevents Ampache from automatically cleaning files. If you are using a bind mount on an external storage, this may be desirable as it prevents Ampache from removing files if the external storage goes down.
+* `LOG_FILE`: Full file path to ampache log file inside the container. (Default: /var/log/ampache/ampache.log) When available it will print log file data to the docker logs command. (e.g. `docker logs ampache`)
+
+### Enable debug logging
+
+The Ampache containers do no log anything by default.
+
+You can Enable logging using the docker exec commands to sed your config file. These commands will update your config file to enable logging.
+
+```
+docker exec -it ampache sed -i "s/log_filename = \"%name.%Y%m%d.log\"/log_filename = \"ampache.log\"/g" /var/www/config/ampache.cfg.php
+docker exec -it ampache sed -i "s/;debug = \"true\"/debug = \"true\"/g" /var/www/config/ampache.cfg.php
+```
+
+When enabled make sure there are no visual or permission issues showing up in the container. If you get a permission error you can set the log folder permissions with these commands.
+
+```
+docker exec -it ampache chown www:data:www-data /var/log/ampache
+docker exec -it ampache chmod 754 /var/log/ampache
+```
+
+Restart the container and logs will start flowing in!
+
+```
+2025-08-25 23:55:53,909 INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-08-25 23:55:53,909 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-08-25 23:55:53,909 INFO success: inotifywait entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-08-25T23:56:08+00:00 [ampache] (Ampache\Module\System\Dba) -> Database connection...
+2025-08-25T23:56:08+00:00 [ampache] (Ampache\Module\System\Dba) -> Database connection...
+2025-08-25T23:56:08+00:00 [user] (Ampache\Module\System\Session) -> f2b64ef63352084c9630aacfe7953677 has been extended to Tue, 26 Aug 2025 00:56:08 +0000 extension length 3600
+2025-08-25T23:56:08+00:00 [user] (Ampache\Module\Application\ApplicationRunner) -> Found handler "Ampache\Module\Application\Index\ShowAction" for action "show"
+2025-08-25T23:56:08+00:00 [user] (Ampache\Module\System\Session) -> Session created: 6ff7a5ebd8d9c629f3769ce7220c60ac
+```
 
 ### Permissions
 
