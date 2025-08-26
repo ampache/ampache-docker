@@ -68,9 +68,11 @@ chgrp 33 ./data/media && chmod g+w ./data/media
 
 For more advanced users a few different image variants are available.
 
-### `ampache:version`
+### `ampache:<version>`
 
 **Recommended**: Specifies a particular version from the Ampache master (stable) branch. Pinning Ampache to a specific version can prevent issues where you unexpectedly update a major version of Ampache with breaking changes you're not aware of.
+
+e.g. `ampache:7`, `ampache:7.7.2`
 
 Use something like [Diun](https://crazymax.dev/diun/) to monitor for updates to the image.
 
@@ -91,6 +93,8 @@ For advanced users, this provides an image without a MySQL server built-in. You 
 ### `ampache:nosql<version>`
 
 The `nosql` image pinned to a specific version.
+
+e.g. `ampache:nosql7`, `ampache:nosql7.7.2`
 
 ## Running on ARM
 
