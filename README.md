@@ -65,7 +65,7 @@ docker exec -it ampache sed -i "s/log_filename = \"%name.%Y%m%d.log\"/log_filena
 docker exec -it ampache sed -i "s/;debug = \"true\"/debug = \"true\"/g" /var/www/config/ampache.cfg.php
 ```
 
-When enabled make sure there are no visual or permission issues showing up in the container. If you get a permission error you can set the log folder permissions with these commands.
+When enabled make sure there are no visual or permission issues showing up in your browser. If you get a permission error you can set the log folder permissions with these commands.
 
 ```
 docker exec -it ampache chown www:data:www-data /var/log/ampache
