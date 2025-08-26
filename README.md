@@ -56,7 +56,7 @@ Available environment variables are:
 
 ### Enable debug logging
 
-The Ampache containers do no log anything by default.
+The Ampache containers do not log anything by default.
 
 You can Enable logging using the docker exec commands to sed your config file. These commands will update your config file to enable logging.
 
