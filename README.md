@@ -23,7 +23,7 @@ This section covers two methods for running Ampache, first with the `docker run`
 To run the current Ampache master (stable) branch:
 
 ```bash
-docker run --name=ampache -d -v /path/to/your/music:/media:ro -p 80:80 ampache/ampache
+docker run --name=ampache -d -v /path/to/your/music:/media:ro -v /path/to/savable/configs:/var/www/config -v /etc/localtime:/etc/localtime:ro -p 80:80 ampache/ampache
 ```
 
 ### docker-compose
