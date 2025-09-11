@@ -4,11 +4,15 @@ Docker image for Ampache, a web based audio/video streaming application and file
 
 ## NEWS
 
-Ampache 5.6.2 had to upgrade from Debian Bullseye to Bookworm.
+Debian has released a new stable version and containers are updated to match.
 
-MariaDB has been upgraded and has already caused one issue so far.
+* Trixie uses PHP 8.4 and MariaDB has been updated to the latest LTS version.
+* The UID and GID of mysql has changed and this [commit](https://github.com/ampache/ampache-docker/commit/1020db4855d641b938560b90c513aa667c6f5df2) checks that your ID's match the container ID's.
+* The included `php.ini` file has been updated so you may need to update yours depending on your changes.
 
-Have a look at https://github.com/ampache/ampache-docker/issues/102#issuecomment-1640956439 for information about how it was solved when there was an error during the upgrade.
+For the Debian upgrade to Bookworm MariaDB upgrades caused one issue.
+
+Have a look at [comment](https://github.com/ampache/ampache-docker/issues/102#issuecomment-1640956439) for information about how it was solved when there was an error during the upgrade.
 
 ## How to use this image
 
@@ -48,6 +52,38 @@ You can configure parts of the container using environment variables. When runni
 Available environment variables are:
 
 * `DISABLE_INOTIFYWAIT_CLEAN`: If set to 1, disables the clean step on the directory monitor. This prevents Ampache from automatically cleaning files. If you are using a bind mount on an external storage, this may be desirable as it prevents Ampache from removing files if the external storage goes down.
+* `LOG_FILE`: Full file path to ampache log file inside the container. (Default: /var/log/ampache/ampache.log) When available it will print log file data to the docker logs command. (e.g. `docker logs ampache`)
+
+### Enable debug logging
+
+The Ampache containers do not log anything by default.
+
+You can Enable logging using the docker exec commands to sed your config file. These commands will update your config file to enable logging.
+
+```
+docker exec -it ampache sed -i "s/log_filename = \"%name.%Y%m%d.log\"/log_filename = \"ampache.log\"/g" /var/www/config/ampache.cfg.php
+docker exec -it ampache sed -i "s/;debug = \"true\"/debug = \"true\"/g" /var/www/config/ampache.cfg.php
+```
+
+When enabled make sure there are no visual or permission issues showing up in your browser. If you get a permission error you can set the log folder permissions with these commands.
+
+```
+docker exec -it ampache chown www:data:www-data /var/log/ampache
+docker exec -it ampache chmod 754 /var/log/ampache
+```
+
+Restart the container and logs will start flowing in!
+
+```
+2025-08-25 23:55:53,909 INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-08-25 23:55:53,909 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-08-25 23:55:53,909 INFO success: inotifywait entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-08-25T23:56:08+00:00 [ampache] (Ampache\Module\System\Dba) -> Database connection...
+2025-08-25T23:56:08+00:00 [ampache] (Ampache\Module\System\Dba) -> Database connection...
+2025-08-25T23:56:08+00:00 [user] (Ampache\Module\System\Session) -> f2b64ef63352084c9630aacfe7953677 has been extended to Tue, 26 Aug 2025 00:56:08 +0000 extension length 3600
+2025-08-25T23:56:08+00:00 [user] (Ampache\Module\Application\ApplicationRunner) -> Found handler "Ampache\Module\Application\Index\ShowAction" for action "show"
+2025-08-25T23:56:08+00:00 [user] (Ampache\Module\System\Session) -> Session created: 6ff7a5ebd8d9c629f3769ce7220c60ac
+```
 
 ### Permissions
 
@@ -68,9 +104,11 @@ chgrp 33 ./data/media && chmod g+w ./data/media
 
 For more advanced users a few different image variants are available.
 
-### `ampache:version`
+### `ampache:<version>`
 
 **Recommended**: Specifies a particular version from the Ampache master (stable) branch. Pinning Ampache to a specific version can prevent issues where you unexpectedly update a major version of Ampache with breaking changes you're not aware of.
+
+e.g. `ampache:7`, `ampache:7.7.2`
 
 Use something like [Diun](https://crazymax.dev/diun/) to monitor for updates to the image.
 
@@ -91,6 +129,8 @@ For advanced users, this provides an image without a MySQL server built-in. You 
 ### `ampache:nosql<version>`
 
 The `nosql` image pinned to a specific version.
+
+e.g. `ampache:nosql7`, `ampache:nosql7.7.2`
 
 ## Running on ARM
 
