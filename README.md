@@ -51,8 +51,25 @@ You can configure parts of the container using environment variables. When runni
 
 Available environment variables are:
 
+* `VERSION`: Ampache version to build using GitHub release [tags](https://github.com/ampache/ampache/tags)
+* `MYSQL_PASS`: Set your own MySql root password (Or one will be randomly generated for you)
 * `DISABLE_INOTIFYWAIT_CLEAN`: If set to 1, disables the clean step on the directory monitor. This prevents Ampache from automatically cleaning files. If you are using a bind mount on an external storage, this may be desirable as it prevents Ampache from removing files if the external storage goes down.
 * `LOG_FILE`: Full file path to ampache log file inside the container. (Default: /var/log/ampache/ampache.log) When available it will print log file data to the docker logs command. (e.g. `docker logs ampache`)
+
+#### Automated install
+
+When you install Ampache you can use the CLI to do it without using the web interface.
+
+The following variables can be used to automatically install the server
+
+* `DB_NAME` Desired Database Name **REQUIRED**
+* `DB_USER` MySQL Administrative Username **REQUIRED**
+* `DB_PASSWORD` MySQL Administrative Password **REQUIRED**
+* `DB_HOST` Hostname of your database **REQUIRED**
+* `DB_PORT` MySQL Port
+* `FORCE_INSTALL` If 1 then forcibly replace any existing config
+* `AMPACHE_DB_USER` Ampache Database Username (Fallback to `DB_USER`)
+* `AMPACHE_DB_PASSWORD` Ampache Database Password (Fallback to `DB_PASSWORD`)
 
 ### Enable debug logging
 
@@ -60,21 +77,21 @@ The Ampache containers do not log anything by default.
 
 You can Enable logging using the docker exec commands to sed your config file. These commands will update your config file to enable logging.
 
-```
+```bash
 docker exec -it ampache sed -i "s/log_filename = \"%name.%Y%m%d.log\"/log_filename = \"ampache.log\"/g" /var/www/config/ampache.cfg.php
 docker exec -it ampache sed -i "s/;debug = \"true\"/debug = \"true\"/g" /var/www/config/ampache.cfg.php
 ```
 
 When enabled make sure there are no visual or permission issues showing up in your browser. If you get a permission error you can set the log folder permissions with these commands.
 
-```
+```bash
 docker exec -it ampache chown www:data:www-data /var/log/ampache
 docker exec -it ampache chmod 754 /var/log/ampache
 ```
 
 Restart the container and logs will start flowing in!
 
-```
+```txt
 2025-08-25 23:55:53,909 INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
 2025-08-25 23:55:53,909 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
 2025-08-25 23:55:53,909 INFO success: inotifywait entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
@@ -161,10 +178,10 @@ After installation you will need to setup a catalog. Make sure to use `/media` a
 
 This applies if Ampache is running behind a reverse proxy. The following are typical error messages:
 
-(Ampache\Module\Api\Subsonic_Api) -> Stream error: 
+(Ampache\Module\Api\Subsonic_Api) -> Stream error:
 (Ampache\Module\Api\Subsonic_Api) -> Stream error: The requested URL returned error: 404 Not Found
 
-In ampache.cfg.php set local_web_path to localhost. There are various discussions and issues with more detail on this, see for example: https://github.com/ampache/ampache/issues/1639
+In ampache.cfg.php set local_web_path to localhost. There are various discussions and issues with more detail on this, see for example: <https://github.com/ampache/ampache/issues/1639>
 
 ## Themes
 
@@ -189,4 +206,3 @@ docker run -d --name=ampache -v ./data/new-theme:/var/www/public/themes/new-them
 * @ericfrederich for his original work
 * @velocity303 and @goldy for the other ampache-docker inspiration
 * @kuzi-moto for bringing the image out of the dark ages
-
