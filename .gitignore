@@ -4,3 +4,4 @@ data/log/*
 data/mysql/*
 data/media/*
 nohup.out
+.env
