@@ -12,4 +12,13 @@ services:
       - ./data/log:/var/log/ampache
       - ./data/media:/media
     environment:
+      MYSQL_PASS: ${MYSQL_PASS-**Random**}
       DISABLE_INOTIFYWAIT_CLEAN: ${DISABLE_INOTIFYWAIT_CLEAN-0}
+      DB_NAME: ${DB_NAME-}
+      DB_USER: ${DB_USER-}
+      DB_PASSWORD: ${DB_PASSWORD-}
+      DB_HOST: ${DB_HOST-}
+      DB_PORT: ${DB_PORT-}
+      FORCE_INSTALL: ${FORCE_INSTALL-0}
+      AMPACHE_DB_USER: ${AMPACHE_DB_USER-}
+      AMPACHE_DB_PASSWORD: ${AMPACHE_DB_PASSWORD-}

@@ -2,3 +2,4 @@ data/config/ampache.cfg.php
 data/log/*
 data/media/*
 nohup.out
+.env
