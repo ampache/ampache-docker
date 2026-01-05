@@ -60,7 +60,9 @@ Available environment variables are:
 
 When you install Ampache you can use the CLI to do it without using the web interface.
 
-The following variables can be used to automatically install the server
+The following variables can be used to automatically install the server.
+
+An install will only run when there is no existing config file ()`/var/www/config/ampache.cfg.php`)
 
 * `DB_NAME` Desired Database Name **REQUIRED**
 * `DB_USER` MySQL Administrative Username **REQUIRED**
@@ -70,6 +72,9 @@ The following variables can be used to automatically install the server
 * `FORCE_INSTALL` If 1 then forcibly replace any existing config
 * `AMPACHE_DB_USER` Ampache Database Username (Fallback to `DB_USER`)
 * `AMPACHE_DB_PASSWORD` Ampache Database Password (Fallback to `DB_PASSWORD`)
+* `AMPACHE_ADMIN_USER` Admin username **REQUIRED**
+* `AMPACHE_ADMIN_PASSWORD` Admin password (A random password will be generated without)
+* `AMPACHE_ADMIN_EMAIL` Admin email address **REQUIRED**
 
 ### Enable debug logging
 
