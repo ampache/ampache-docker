@@ -13,7 +13,6 @@ services:
       - ./data/media:/media
       - ./data/mysql:/var/lib/mysql
     environment:
-      VERSION: ${VERSION-7.8.0}
       MYSQL_PASS: ${MYSQL_PASS-**Random**}
       DISABLE_INOTIFYWAIT_CLEAN: ${DISABLE_INOTIFYWAIT_CLEAN-0}
       DB_NAME: ${DB_NAME-}
