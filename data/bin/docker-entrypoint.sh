@@ -45,3 +45,23 @@ if [ "$1" = '/usr/local/bin/run.sh' ] && [ "$(id -u)" = '0' ]; then
 else
   exec "$@"
 fi
+
+# INSTALL
+# php /var/www/html/bin/installer install
+if [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] && [ -n "$DB_PASSWORD" ] && [ -n "$DB_HOST" ]; then
+    INSTALL_COMMAND="php /var/www/bin/installer install --dbname $DB_NAME --dbuser $DB_USER --dbpassword $DB_PASSWORD --dbhost $DB_HOST"
+    # Add --force flag only when FORCE_INSTALL=1
+    if [ "${FORCE_INSTALL:-0}" = "1" ]; then
+        INSTALL_COMMAND="$INSTALL_COMMAND --force"
+    fi
+    if [ -n "$DB_PORT" ]; then
+        INSTALL_COMMAND="$INSTALL_COMMAND --dbport $DB_PORT"
+    fi
+    if [ -n "$AMPACHE_DB_USER" ] && [ -n "$AMPACHE_DB_PASSWORD" ]; then
+        INSTALL_COMMAND="$INSTALL_COMMAND --ampachedbuser $AMPACHE_DB_USER --ampachedbpassword $AMPACHE_DB_PASSWORD"
+    else
+        INSTALL_COMMAND="$INSTALL_COMMAND --ampachedbuser $DB_USER --ampachedbpassword $DB_PASSWORD"
+    fi
+
+    $INSTALL_COMMAND
+fi
