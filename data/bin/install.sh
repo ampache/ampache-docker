@@ -15,6 +15,9 @@ done
 if [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] && [ -n "$DB_HOST" ] && { [ -n "$DB_PASSWORD" ] || ( [ "$DB_USER" = "root" ] && { [ "$DB_HOST" = "localhost" ] || [ "$DB_HOST" = "127.0.0.1" ]; } ); }; then
     # php /var/www/html/bin/installer install
     INSTALL_COMMAND="php /var/www/bin/installer install --dbname $DB_NAME --dbhost $DB_HOST --dbuser $DB_USER"
+    if [ "$DB_PASSWORD" = "**Random**" ]; then
+            DB_PASSWORD=$(pwgen -s 14 1)
+        fi
     if [ -n "$DB_PASSWORD" ]; then
         INSTALL_COMMAND="$INSTALL_COMMAND --dbpassword $DB_PASSWORD"
     fi
@@ -25,9 +28,14 @@ if [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] && [ -n "$DB_HOST" ] && { [ -n "$DB_PA
     if [ -n "$DB_PORT" ]; then
         INSTALL_COMMAND="$INSTALL_COMMAND --dbport $DB_PORT"
     fi
+    # fall back for Ampache variables if not set
+    if [ -n "$DB_USER" ] && [ ! -n "$AMPACHE_DB_USER" ]; then
+        AMPACHE_DB_USER=$DB_USER
+    fi
     if [ -n "$DB_PASSWORD" ] && [ ! -n "$AMPACHE_DB_PASSWORD" ]; then
         AMPACHE_DB_PASSWORD=$DB_PASSWORD
     fi
+
     if [ -n "$AMPACHE_DB_USER" ] && [ -n "$AMPACHE_DB_PASSWORD" ]; then
         if [ "$AMPACHE_DB_PASSWORD" = "**Random**" ]; then
             AMPACHE_DB_PASSWORD=$(pwgen -s 14 1)
