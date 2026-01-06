@@ -11,15 +11,13 @@ while [ $RET -ne 0 ]; do
     RET=$?
 done
 
-if [ "$MYSQL_PASS" = "**Random**" ]; then
-    unset MYSQL_PASS
-fi
-
-
 # INSTALL
-if [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] && [ -n "$DB_PASSWORD" ] && [ -n "$DB_HOST" ]; then
+if [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] && [ -n "$DB_HOST" ] && { [ -n "$DB_PASSWORD" ] || ( [ "$DB_USER" = "root" ] && { [ "$DB_HOST" = "localhost" ] || [ "$DB_HOST" = "127.0.0.1" ]; } ); }; then
     # php /var/www/html/bin/installer install
-    INSTALL_COMMAND="php /var/www/bin/installer install --dbname $DB_NAME --dbuser $DB_USER --dbpassword $DB_PASSWORD --dbhost $DB_HOST"
+    INSTALL_COMMAND="php /var/www/bin/installer install --dbname $DB_NAME --dbhost $DB_HOST --dbuser $DB_USER"
+    if [ -n "$DB_PASSWORD" ]; then
+        INSTALL_COMMAND="$INSTALL_COMMAND --dbpassword $DB_PASSWORD"
+    fi
     # Add --force flag only when FORCE_INSTALL=1
     if [ "${FORCE_INSTALL:-0}" = "1" ]; then
         INSTALL_COMMAND="$INSTALL_COMMAND --force"
@@ -27,9 +25,19 @@ if [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] && [ -n "$DB_PASSWORD" ] && [ -n "$DB_
     if [ -n "$DB_PORT" ]; then
         INSTALL_COMMAND="$INSTALL_COMMAND --dbport $DB_PORT"
     fi
+    if [ -n "$DB_PASSWORD" ] && [ ! -n "$AMPACHE_DB_PASSWORD" ]; then
+        AMPACHE_DB_PASSWORD=$DB_PASSWORD
+    fi
     if [ -n "$AMPACHE_DB_USER" ] && [ -n "$AMPACHE_DB_PASSWORD" ]; then
+        if [ "$AMPACHE_DB_PASSWORD" = "**Random**" ]; then
+            AMPACHE_DB_PASSWORD=$(pwgen -s 14 1)
+        fi
         INSTALL_COMMAND="$INSTALL_COMMAND --ampachedbuser $AMPACHE_DB_USER --ampachedbpassword $AMPACHE_DB_PASSWORD"
     else
+        if [ ! -n "$DB_PASSWORD" ]; then
+            echo "=> ERROR: Missing password for Ampache database user"
+            exit 1
+        fi
         INSTALL_COMMAND="$INSTALL_COMMAND --ampachedbuser $DB_USER --ampachedbpassword $DB_PASSWORD"
     fi
 
@@ -37,7 +45,7 @@ if [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] && [ -n "$DB_PASSWORD" ] && [ -n "$DB_
     $INSTALL_COMMAND
 fi
 if [ -n "$AMPACHE_ADMIN_USER" ] && [ -n "$AMPACHE_ADMIN_EMAIL" ] ; then
-    if [ "$MYSQL_PASS" = "**Random**" ]; then
+    if [ "$AMPACHE_ADMIN_PASSWORD" = "**Random**" ] || [ ! -n "$AMPACHE_ADMIN_PASSWORD" ]; then
         AMPACHE_ADMIN_PASSWORD=$(pwgen -s 14 1)
     fi
 
