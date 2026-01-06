@@ -83,10 +83,12 @@ An install will only run when there is no existing config file (`/var/www/config
   * AMPACHE_DB_PASSWORD
   * AMPACHE_ADMIN_PASSWORD
 
-EXAMPLE:
+EXAMPLE: This will create an Ampache develop container on port 80 with a random password for the admin user.
 
 ```bash
-docker run -d --name=ampache-develop -e DB_NAME=ampache-develop -e DB_USER=root -e DB_HOST=localhost -e AMPACHE_DB_USER=root -e AMPACHE_DB_PASSWORD=**Random** -e AMPACHE_ADMIN_USER=admin -e AMPACHE_ADMIN_EMAIL=admin@example.com -p 80:80 ampache/ampache:develop
+docker run -d --name=ampache-develop -e DB_NAME=ampache-develop -e MYSQL_USER=admin -e MYSQL_PASS=changeme -e DB_HOST=loc
+alhost -e AMPACHE_ADMIN_USER=admin -e AMPACHE_ADMIN_EMAIL=admin@example.com -p 80:80 ampache/ampa
+che:develop
 ```
 
 This creates a new container with a local MariaDB and configures an admin account.
