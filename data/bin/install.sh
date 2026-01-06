@@ -11,6 +11,16 @@ while [ $RET -ne 0 ]; do
     RET=$?
 done
 
+# fall back for DB user variables if not set
+if [ -n "$DB_HOST" ]; then
+    if [ -n "$MYSQL_USER" ] && [ ! -n "$DB_USER" ]; then
+        DB_USER=$MYSQL_USER
+    fi
+    if [ -n "$MYSQL_PASS" ] && [ ! -n "$DB_PASSWORD" ]; then
+        DB_PASSWORD=$MYSQL_PASS
+    fi
+fi
+
 # INSTALL
 if [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] && [ -n "$DB_HOST" ] && { [ -n "$DB_PASSWORD" ] || ( [ "$DB_USER" = "root" ] && { [ "$DB_HOST" = "localhost" ] || [ "$DB_HOST" = "127.0.0.1" ]; } ); }; then
     # php /var/www/html/bin/installer install
