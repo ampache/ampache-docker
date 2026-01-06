@@ -74,7 +74,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
 VOLUME ["/var/www/config"]
 EXPOSE 80
 
-COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
+COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/install.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
 COPY data/apache2/php.ini /etc/php/8.4/apache2/
 COPY data/logrotate.d/* /etc/logrotate.d/
