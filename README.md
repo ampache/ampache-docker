@@ -52,7 +52,7 @@ You can configure parts of the container using environment variables. When runni
 Available environment variables are:
 
 * `VERSION`: Ampache version to build using GitHub release [tags](https://github.com/ampache/ampache/tags)
-* `MYSQL_PASS`: Set your own MySql root password (Or one will be randomly generated for you)
+* `MYSQL_PASS`: Set your own MySql admin password (Or one will be randomly generated for you)
 * `DISABLE_INOTIFYWAIT_CLEAN`: If set to 1, disables the clean step on the directory monitor. This prevents Ampache from automatically cleaning files. If you are using a bind mount on an external storage, this may be desirable as it prevents Ampache from removing files if the external storage goes down.
 * `LOG_FILE`: Full file path to ampache log file inside the container. (Default: /var/log/ampache/ampache.log) When available it will print log file data to the docker logs command. (e.g. `docker logs ampache`)
 
@@ -65,16 +65,29 @@ The following variables can be used to automatically install the server.
 An install will only run when there is no existing config file (`/var/www/config/ampache.cfg.php`)
 
 * `DB_NAME` Desired Database Name **REQUIRED**
-* `DB_USER` MySQL Administrative Username **REQUIRED**
-* `DB_PASSWORD` MySQL Administrative Password **REQUIRED**
 * `DB_HOST` Hostname of your database **REQUIRED**
+* `DB_USER` MySQL Administrative Username **REQUIRED**
+* `DB_PASSWORD` MySQL Administrative Password (Not required when using `localhost`/`127.0.0.1` for `DB_HOST`)
 * `DB_PORT` MySQL Port
-* `FORCE_INSTALL` If 1 then forcibly replace any existing config
+* `FORCE_INSTALL` If 1 then forcibly replace any existing database
 * `AMPACHE_DB_USER` Ampache Database Username (Fallback to `DB_USER`)
 * `AMPACHE_DB_PASSWORD` Ampache Database Password (Fallback to `DB_PASSWORD`)
 * `AMPACHE_ADMIN_USER` Admin username **REQUIRED**
 * `AMPACHE_ADMIN_PASSWORD` Admin password (A random password will be generated without)
 * `AMPACHE_ADMIN_EMAIL` Admin email address **REQUIRED**
+
+* Random passwords can be assigned by using `**Random**` for the following variables
+  * MYSQL_PASS
+  * AMPACHE_DB_PASSWORD
+  * AMPACHE_ADMIN_PASSWORD
+
+EXAMPLE:
+
+```bash
+docker run -d --name=ampache-develop -e DB_NAME=ampache-develop -e DB_USER=root -e DB_HOST=localhost -e AMPACHE_DB_USER=root -e AMPACHE_DB_PASSWORD=**Random** -e AMPACHE_ADMIN_USER=admin -e AMPACHE_ADMIN_EMAIL=admin@example.com -p 80:80 ampache/ampache:develop
+```
+
+This creates a new container with a local MariaDB and configures an admin account.
 
 ### Enable debug logging
 
