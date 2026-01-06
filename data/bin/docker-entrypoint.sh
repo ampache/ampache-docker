@@ -21,20 +21,9 @@ if id mysql >/dev/null 2>&1; then
     DIR_GID=$(stat -c %g /var/lib/mysql)
 
     if [ "$MYSQL_UID" -ne "$DIR_UID" ] || [ "$MYSQL_GID" -ne "$DIR_GID" ]; then
-        echo "Fixing ownership of /var/lib/mysql (expected ${MYSQL_UID}:${MYSQL_GID}, found ${DIR_UID}:${DIR_GID})"
+        echo "=> Fixing ownership of /var/lib/mysql (expected ${MYSQL_UID}:${MYSQL_GID}, found ${DIR_UID}:${DIR_GID})"
         chown -R mysql:mysql /var/lib/mysql
     fi
-fi
-
-# Set a default log file if LOG_FILE is not set
-LOG_FILE=${LOG_FILE:-/var/log/ampache/ampache.log}
-
-# Tail the log file if it exists
-if [ -f "$LOG_FILE" ]; then
-    echo "Tailing log file: $LOG_FILE"
-    tail -F "$LOG_FILE" &
-else
-    echo "Log file not found: $LOG_FILE (will not tail)"
 fi
 
 # Re-set permission to the `www-data` user if current user is root
