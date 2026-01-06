@@ -17,9 +17,13 @@ fi
 
 
 # INSTALL
-if [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] && [ -n "$DB_PASSWORD" ] && [ -n "$DB_HOST" ]; then
+if [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] && [ -n "$DB_HOST" ] && { [ -n "$DB_PASSWORD" ] || ( [ "$DB_USER" = "root" ] && { [ "$DB_HOST" = "localhost" ] || [ "$DB_HOST" = "127.0.0.1" ]; } ); }; then
     # php /var/www/html/bin/installer install
-    INSTALL_COMMAND="php /var/www/bin/installer install --dbname $DB_NAME --dbuser $DB_USER --dbpassword $DB_PASSWORD --dbhost $DB_HOST"
+    INSTALL_COMMAND="php /var/www/bin/installer install --dbname $DB_NAME --dbhost $DB_HOST --dbuser $DB_USER"
+    if [ -n "$DB_PASSWORD" ]; then
+        # Password isn't always required
+        INSTALL_COMMAND="$INSTALL_COMMAND --dbpassword $DB_PASSWORD"
+    fi
     # Add --force flag only when FORCE_INSTALL=1
     if [ "${FORCE_INSTALL:-0}" = "1" ]; then
         INSTALL_COMMAND="$INSTALL_COMMAND --force"
@@ -30,6 +34,10 @@ if [ -n "$DB_NAME" ] && [ -n "$DB_USER" ] && [ -n "$DB_PASSWORD" ] && [ -n "$DB_
     if [ -n "$AMPACHE_DB_USER" ] && [ -n "$AMPACHE_DB_PASSWORD" ]; then
         INSTALL_COMMAND="$INSTALL_COMMAND --ampachedbuser $AMPACHE_DB_USER --ampachedbpassword $AMPACHE_DB_PASSWORD"
     else
+        if [ ! -n "$DB_PASSWORD" ]; then
+            echo "=> ERROR: Missing password for Ampache database user"
+            exit 1
+        fi
         INSTALL_COMMAND="$INSTALL_COMMAND --ampachedbuser $DB_USER --ampachedbpassword $DB_PASSWORD"
     fi
 
