@@ -22,7 +22,6 @@ echo "=> Creating MySQL admin user with ${_word} password"
 mysql -uroot -e "CREATE USER 'admin'@'localhost' IDENTIFIED BY '$PASS'"
 mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT OPTION"
 
-
 echo "=> Done!"
 echo "========================================================================"
 echo "You can now connect to this MySQL Server using:"
