@@ -4,6 +4,7 @@ FROM debian:stable
 LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV MYSQL_USER=admin
 ENV MYSQL_PASS=**Random**
 ENV DISABLE_INOTIFYWAIT_CLEAN=0
 ARG VERSION=7.8.0
