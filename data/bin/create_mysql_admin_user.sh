@@ -11,16 +11,21 @@ while [ $RET -ne 0 ]; do
     RET=$?
 done
 
+USER=${MYSQL_USER:-admin}
+if [ "$USER" = "root" ]; then
+    USER="admin"
+fi
+
 if [ "$MYSQL_PASS" = "**Random**" ]; then
     unset MYSQL_PASS
 fi
 
 PASS=${MYSQL_PASS:-$(pwgen -s 12 1)}
 _word=$( [ ${MYSQL_PASS} ] && echo "preset" || echo "random" )
-echo "=> Creating MySQL admin user with ${_word} password"
+echo "=> Creating MySQL admin user ($USER) with ${_word} password"
 
-mysql -uroot -e "CREATE USER 'admin'@'localhost' IDENTIFIED BY '$PASS'"
-mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT OPTION"
+mysql -uroot -e "CREATE USER '$USER'@'localhost' IDENTIFIED BY '$PASS'"
+mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO '$USER'@'localhost' WITH GRANT OPTION"
 
 echo "=> Done!"
 echo "========================================================================"
