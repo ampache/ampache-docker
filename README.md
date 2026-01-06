@@ -62,7 +62,7 @@ When you install Ampache you can use the CLI to do it without using the web inte
 
 The following variables can be used to automatically install the server.
 
-An install will only run when there is no existing config file ()`/var/www/config/ampache.cfg.php`)
+An install will only run when there is no existing config file (`/var/www/config/ampache.cfg.php`)
 
 * `DB_NAME` Desired Database Name **REQUIRED**
 * `DB_USER` MySQL Administrative Username **REQUIRED**
