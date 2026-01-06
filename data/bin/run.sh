@@ -15,5 +15,16 @@ else
     echo "=> Ampache config file found: $CONFIG_FILE"
 fi
 
+# Set a default log file if LOG_FILE is not set
+LOG_FILE=${LOG_FILE:-/var/log/ampache/ampache.log}
+
+# Tail the log file if it exists
+if [ -f "$LOG_FILE" ]; then
+    echo "=> Tailing log file: $LOG_FILE"
+    tail -F "$LOG_FILE" &
+else
+    echo "=> Log file not found: $LOG_FILE (will not tail)"
+fi
+
 # Start Supervisor to manage all the processes
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
