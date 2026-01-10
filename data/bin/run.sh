@@ -15,6 +15,11 @@ else
     echo "=> Ampache config file found: $CONFIG_FILE"
 fi
 
+# Check for existing installation
+if [ -f "/var/tmp/client/$CLIENT_ZIP" ] && [ -f "/var/tmp/client/$CLIENT_INSTALL" ]; then
+    echo "=> Checking Ampache client install: $CLIENT_ZIP"
+    /var/tmp/client/$CLIENT_INSTALL
+fi
 # Set a default log file if LOG_FILE is not set
 LOG_FILE=${LOG_FILE:-/var/log/ampache/ampache.log}
 

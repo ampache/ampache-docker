@@ -2,12 +2,13 @@ name: ampache
 
 services:
   ampache:
-    image: ampache/ampache:nosql
+    image: ampache/ampache:client-nosql
     container_name: ampache
     restart: unless-stopped
     ports:
-      - 80:80
+      - "26724:80"
     volumes:
+      - ./data/client:/var/tmp/client
       - ./data/config:/var/www/config
       - ./data/log:/var/log/ampache
       - ./data/media:/media
@@ -26,3 +27,6 @@ services:
       AMPACHE_ADMIN_USER: ${AMPACHE_ADMIN_USER-}
       AMPACHE_ADMIN_PASSWORD: ${AMPACHE_ADMIN_PASSWORD-}
       AMPACHE_ADMIN_EMAIL: ${AMPACHE_ADMIN_EMAIL-}
+      AMPACHE_URL: ${AMPACHE_URL-https://demo.ampache.dev}
+      CLIENT_ZIP: ${CLIENT_ZIP-ample.zip}
+      CLIENT_INSTALL: ${CLIENT_INSTALL-ample.sh}
