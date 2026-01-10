@@ -6,6 +6,7 @@ ENV MYSQL_USER=admin
 ENV MYSQL_PASS=**Random**
 ENV DISABLE_INOTIFYWAIT_CLEAN=0
 ARG VERSION=7.8.0
+ARG PHPVERSION=${PHPVERSION}
 
 RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/20230612T000000Z\nURIs: http://deb.debian.org/debian\nSuites: stable stable-updates\nComponents: main contrib non-free\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n\nTypes: deb\n# http://snapshot.debian.org/archive/debian-security/20230612T000000Z\nURIs: http://deb.debian.org/debian-security\nSuites: stable-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n" > /etc/apt/sources.list.d/debian.sources' \
     &&  apt-get -q -q update \
@@ -31,14 +32,14 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           locales \
           logrotate \
           mariadb-server \
-          php8.4 \
-          php8.4-curl \
-          php8.4-gd \
-          php8.4-intl \
-          php8.4-ldap \
-          php8.4-mysql \
-          php8.4-xml \
-          php8.4-zip \
+          php${PHPVERSION} \
+          php${PHPVERSION}-curl \
+          php${PHPVERSION}-gd \
+          php${PHPVERSION}-intl \
+          php${PHPVERSION}-ldap \
+          php${PHPVERSION}-mysql \
+          php${PHPVERSION}-xml \
+          php${PHPVERSION}-zip \
           pwgen \
           supervisor \
           vorbis-tools \
@@ -51,7 +52,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/log/ampache \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
-    &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/${VERSION}/ampache-${VERSION}_all_php8.4.zip \
+    &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/${VERSION}/ampache-${VERSION}_all_php${PHPVERSION}.zip \
     &&  unzip /tmp/master.zip -d /var/www/ \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
@@ -78,7 +79,7 @@ EXPOSE 80
 
 COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/mysql.sh data/bin/create_mysql_admin_user.sh data/bin/install.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
-COPY data/apache2/php.ini /etc/php/8.4/apache2/
+COPY data/apache2/php.ini /etc/php/${PHPVERSION}/apache2/
 COPY data/logrotate.d/* /etc/logrotate.d/
 COPY data/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
