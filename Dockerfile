@@ -72,7 +72,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           libdvd-pkg \
           lsb-release \
           git \
-          unzip \
           wget \
     &&  apt-get -qq autoremove
 
