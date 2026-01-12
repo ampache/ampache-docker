@@ -72,7 +72,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           extrepo \
           libdvd-pkg \
           lsb-release \
-          unzip \
           wget \
     &&  apt-get -qq autoremove
 
