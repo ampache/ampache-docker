@@ -33,6 +33,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           locales \
           logrotate \
           mariadb-server \
+          npm \
           php${PHPVERSION} \
           php${PHPVERSION}-curl \
           php${PHPVERSION}-gd \
