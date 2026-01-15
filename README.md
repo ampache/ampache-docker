@@ -14,6 +14,10 @@ For the Debian upgrade to Bookworm MariaDB upgrades caused one issue.
 
 Have a look at [comment](https://github.com/ampache/ampache-docker/issues/102#issuecomment-1640956439) for information about how it was solved when there was an error during the upgrade.
 
+## GitHub Project
+
+[github.com](https://github.com/ampache/ampache-docker)
+
 ## How to use this image
 
 This section covers two methods for running Ampache, first with the `docker run` command, and then using `docker-compose`.
