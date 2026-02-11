@@ -13,8 +13,8 @@ services:
       - ./data/media:/media
       - ./data/mysql:/var/lib/mysql
     environment:
-      MYSQL_USER: ${MYSQL_USER-admin}
-      MYSQL_PASS: ${MYSQL_PASS-**Random**}
+      MYSQL_USER: ${MYSQL_USER-aldavis1201}
+      MYSQL_PASS: ${MYSQL_PASS-Hotsauce@8940}
       DB_NAME: ${DB_NAME-}
       DB_HOST: ${DB_HOST-}
       DB_USER: ${DB_USER-}
