@@ -61,6 +61,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  cd /var/www \
     &&  wget -q -O ./composer https://getcomposer.org/download/latest-stable/composer.phar \
     &&  chmod +x ./composer \
+    &&  rm ./composer.lock \
     &&  ./composer install --prefer-dist --no-interaction \
     &&  ./composer clear-cache \
     &&  npm install \
