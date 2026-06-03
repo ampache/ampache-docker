@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:trixie-slim
 LABEL maintainer="lachlan-00"
 
 ENV DEBIAN_FRONTEND=noninteractive
