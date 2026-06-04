@@ -14,6 +14,10 @@ For the Debian upgrade to Bookworm MariaDB upgrades caused one issue.
 
 Have a look at [comment](https://github.com/ampache/ampache-docker/issues/102#issuecomment-1640956439) for information about how it was solved when there was an error during the upgrade.
 
+## GitHub Project
+
+[github.com](https://github.com/ampache/ampache-docker)
+
 ## How to use this image
 
 This section covers two methods for running Ampache, first with the `docker run` command, and then using `docker-compose`.
@@ -22,7 +26,7 @@ This section covers two methods for running Ampache, first with the `docker run`
 
 To run the current Ampache master (stable) branch:
 
-```bash
+```shell
 docker run --name=ampache -d -v /path/to/your/music:/media:ro -p 80:80 ampache/ampache
 ```
 
@@ -34,7 +38,7 @@ If you're already using Docker Desktop for Windows or Mac then Docker Compose is
 
 In the [GitHub repository](https://github.com/ampache/ampache-docker/blob/master/docker-compose.yml) is a simple `docker-compose.yml` file to get started. Download the file and run this command to start an Ampache container:
 
-```bash
+```shell
 docker-compose up -d
 ```
 
@@ -83,12 +87,25 @@ An install will only run when there is no existing config file (`/var/www/config
   * AMPACHE_DB_PASSWORD
   * AMPACHE_ADMIN_PASSWORD
 
+For the [Ampache client](#ampacheclient) image type there are two additional variables.
+
+To use a custom interface the files must exist in the container. (Either copied from `/data/client` to `/var/tmp/client` during image build or by using a volume mounted to `/var/tmp/client`)
+
+* `CLIENT_ZIP` Custom client install zip (Default: `ample.zip`)
+* `CLIENT_INSTALL` Custom client install script (Default: `ample.sh`)
+
 EXAMPLE: This will create an Ampache develop container on port 80 with a random password for the admin user.
 
-```bash
-docker run -d --name=ampache-develop -e DB_NAME=ampache-develop -e MYSQL_USER=admin -e MYSQL_PASS=changeme -e DB_HOST=loc
-alhost -e AMPACHE_ADMIN_USER=admin -e AMPACHE_ADMIN_EMAIL=admin@example.com -p 80:80 ampache/ampa
-che:develop
+```shell
+docker run -d --name=ampache-develop \
+    -e DB_NAME=ampache-develop \
+    -e MYSQL_USER=admin \
+    -e MYSQL_PASS=changeme \
+    -e DB_HOST=localhost \
+    -e AMPACHE_ADMIN_USER=admin \
+    -e AMPACHE_ADMIN_EMAIL=admin@example.com \
+    -p 80:80 \
+    ampache/ampache:develop
 ```
 
 This creates a new container with a local MariaDB and configures an admin account.
@@ -99,21 +116,21 @@ The Ampache containers do not log anything by default.
 
 You can Enable logging using the docker exec commands to sed your config file. These commands will update your config file to enable logging.
 
-```bash
+```shell
 docker exec -it ampache sed -i "s/log_filename = \"%name.%Y%m%d.log\"/log_filename = \"ampache.log\"/g" /var/www/config/ampache.cfg.php
 docker exec -it ampache sed -i "s/;debug = \"true\"/debug = \"true\"/g" /var/www/config/ampache.cfg.php
 ```
 
 When enabled make sure there are no visual or permission issues showing up in your browser. If you get a permission error you can set the log folder permissions with these commands.
 
-```bash
+```shell
 docker exec -it ampache chown www:data:www-data /var/log/ampache
 docker exec -it ampache chmod 754 /var/log/ampache
 ```
 
 Restart the container and logs will start flowing in!
 
-```txt
+```text
 2025-08-25 23:55:53,909 INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
 2025-08-25 23:55:53,909 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
 2025-08-25 23:55:53,909 INFO success: inotifywait entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
@@ -128,14 +145,14 @@ Restart the container and logs will start flowing in!
 
 In the container the webserver runs as the http user (UID and GID 33). If you created the directories manually, it is important to ensure that the Ampache Configuration, and log directories are readable and writeable by that user.
 
-```bash
+```shell
 chown 33:33 ./data/config -R
 chown 33:33 ./data/log
 ```
 
 Optionally, the media directory should be writable as if you wish to allow uploads.
 
-```bash
+```shell
 chgrp 33 ./data/media && chmod g+w ./data/media
 ```
 
@@ -159,8 +176,6 @@ Pulls the most recent image from the Master (stable) branch
 
 Pulls the most recent image from the Develop branch. This is generally safe to run but can break occasionally. Contains the latest features and updates.
 
-~~The develop tag is set up to use git updates so you don't have to rebuild your images to stay up to date with development.~~
-
 ### `ampache:nosql`
 
 For advanced users, this provides an image without a MySQL server built-in. You must provide your own MySQL server.
@@ -170,6 +185,16 @@ For advanced users, this provides an image without a MySQL server built-in. You 
 The `nosql` image pinned to a specific version.
 
 e.g. `ampache:nosql7`, `ampache:nosql7.7.2`
+
+### `ampache:client`
+
+For advanced users, this provides an image using [Client Structure](/docs/information/ampache7-client-structure-install-type). This allows you to run your own API client inside the base of the web interface.
+
+This image uses [Ample](https://github.com/mitchray/ample) by default and can be customized using [automated install](#automated-install) variables.
+
+### `ampache:client-nosql`
+
+For advanced users, this provides a [Client Structure](/docs/information/ampache7-client-structure-install-type) image without a MySQL server built-in. You must provide your own MySQL server.
 
 ## Running on ARM
 
@@ -200,10 +225,21 @@ After installation you will need to setup a catalog. Make sure to use `/media` a
 
 This applies if Ampache is running behind a reverse proxy. The following are typical error messages:
 
+```text
 (Ampache\Module\Api\Subsonic_Api) -> Stream error:
 (Ampache\Module\Api\Subsonic_Api) -> Stream error: The requested URL returned error: 404 Not Found
+```
 
-In ampache.cfg.php set local_web_path to localhost. There are various discussions and issues with more detail on this, see for example: <https://github.com/ampache/ampache/issues/1639>
+In ampache.cfg.php set local_web_path to localhost.
+
+There are various discussions and issues with more detail on this, see for example: [issue 1639](https://github.com/ampache/ampache/issues/1639)
+
+If you set `local_web_path` and `force_ssl` options in your config that should work. Forcing SSL makes sure that all links are valid for your proxy
+
+```conf
+local_web_path = "http://192.168.1.1:28787" 
+force_ssl = "true"
+```
 
 ## Themes
 
