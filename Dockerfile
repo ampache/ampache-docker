@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV MYSQL_USER=admin
 ENV MYSQL_PASS=**Random**
 ENV DISABLE_INOTIFYWAIT_CLEAN=0
-ARG VERSION=7.9.7
+ARG VERSION=7.9.8
 ARG PHPVERSION=8.5
 
 RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/20230612T000000Z\nURIs: http://deb.debian.org/debian\nSuites: stable stable-updates\nComponents: main contrib non-free\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n\nTypes: deb\n# http://snapshot.debian.org/archive/debian-security/20230612T000000Z\nURIs: http://deb.debian.org/debian-security\nSuites: stable-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n" > /etc/apt/sources.list.d/debian.sources' \
@@ -21,6 +21,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           flac \
           git \
           gosu \
+          graphicsmagick-imagemagick-compat \
           inotify-tools \
           lame \
           libavcodec-extra \
@@ -34,6 +35,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           logrotate \
           mariadb-server \
           npm \
+          ocrad \
           php${PHPVERSION} \
           php${PHPVERSION}-curl \
           php${PHPVERSION}-gd \
@@ -74,7 +76,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
     &&  chown -R www-data:www-data /var/www \
     &&  chmod -R 775 /var/www \
-    &&  rm -rf /var/cache/* /tmp/* /var/tmp/patch7.zip /root/.cache /var/www/docs /var/www/.tx /var/log/dpkg.log \
+    &&  rm -rf /var/cache/* /tmp/* /var/tmp/patch7.zip /root/.cache /var/www/docs /var/www/.tx /var/log/*.log \
     &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     &&  locale-gen \
@@ -82,6 +84,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           build-essential \
           debhelper-compat \
           extrepo \
+          gosu \
           libdvd-pkg \
           lsb-release \
           git \
