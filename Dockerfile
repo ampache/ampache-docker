@@ -70,7 +70,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  apt-get -qq purge \
           extrepo \
           git \
-          gosu \
           libdvd-pkg \
           lsb-release \
           git \
