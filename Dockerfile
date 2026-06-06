@@ -20,7 +20,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           ffmpeg \
           flac \
           git \
-          gosu \
           graphicsmagick-imagemagick-compat \
           inotify-tools \
           lame \
@@ -84,6 +83,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           build-essential \
           debhelper-compat \
           extrepo \
+          git \
           gosu \
           libdvd-pkg \
           lsb-release \
