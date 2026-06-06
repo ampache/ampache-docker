@@ -19,7 +19,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           cron \
           ffmpeg \
           flac \
-          gosu \
+          git \
           graphicsmagick-imagemagick-compat \
           inotify-tools \
           lame \
@@ -69,6 +69,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  locale-gen \
     &&  apt-get -qq purge \
           extrepo \
+          git \
           gosu \
           libdvd-pkg \
           lsb-release \
