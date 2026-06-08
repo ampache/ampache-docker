@@ -39,6 +39,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           php${PHPVERSION}-gd \
           php${PHPVERSION}-intl \
           php${PHPVERSION}-ldap \
+          php${PHPVERSION}-mbstring \
           php${PHPVERSION}-mysql \
           php${PHPVERSION}-xml \
           php${PHPVERSION}-zip \
@@ -66,6 +67,8 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chmod -R 775 /var/www \
     &&  rm -rf /var/cache/* /tmp/* /var/tmp/master.zip /root/.cache /var/www/docs /var/www/.tx /var/log/*.log \
     &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
+    &&  sed -i 's/^# *\(en_US ISO-8859-1\)/\1/' /etc/locale.gen \
+    &&  sed -i 's/^# *\(en_US.ISO-8859-15 ISO-8859-15\)/\1/' /etc/locale.gen \
     &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     &&  locale-gen \
     &&  apt-get -qq purge \
