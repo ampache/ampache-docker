@@ -37,11 +37,16 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           php${PHPVERSION} \
           php${PHPVERSION}-curl \
           php${PHPVERSION}-gd \
+          php${PHPVERSION}-iconv \
           php${PHPVERSION}-intl \
           php${PHPVERSION}-ldap \
           php${PHPVERSION}-mbstring \
           php${PHPVERSION}-mysql \
+          php${PHPVERSION}-pdo \
+          php${PHPVERSION}-simplexml \
+          php${PHPVERSION}-sockets \
           php${PHPVERSION}-xml \
+          php${PHPVERSION}-xmlreader \
           php${PHPVERSION}-zip \
           pwgen \
           supervisor \
