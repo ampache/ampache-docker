@@ -35,13 +35,24 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           npm \
           ocrad \
           php${PHPVERSION} \
+          php${PHPVERSION}-ctype \
           php${PHPVERSION}-curl \
+          php${PHPVERSION}-dom \
           php${PHPVERSION}-gd \
+          php${PHPVERSION}-gettext \
+          php${PHPVERSION}-gmp \
+          php${PHPVERSION}-http \
+          php${PHPVERSION}-iconv \
           php${PHPVERSION}-intl \
           php${PHPVERSION}-ldap \
           php${PHPVERSION}-mbstring \
           php${PHPVERSION}-mysql \
+          php${PHPVERSION}-pdo \
+          php${PHPVERSION}-simplexml \
+          php${PHPVERSION}-sockets \
           php${PHPVERSION}-xml \
+          php${PHPVERSION}-xmlreader \
+          php${PHPVERSION}-xmlwriter \
           php${PHPVERSION}-zip \
           pwgen \
           supervisor \
