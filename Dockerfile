@@ -37,6 +37,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           php${PHPVERSION} \
           php${PHPVERSION}-curl \
           php${PHPVERSION}-gd \
+          php${PHPVERSION}-gettext \
           php${PHPVERSION}-iconv \
           php${PHPVERSION}-intl \
           php${PHPVERSION}-ldap \
