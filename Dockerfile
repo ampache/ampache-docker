@@ -35,9 +35,13 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           mariadb-server \
           ocrad \
           php${PHPVERSION} \
+          php${PHPVERSION}-ctype \
           php${PHPVERSION}-curl \
+          php${PHPVERSION}-dom \
           php${PHPVERSION}-gd \
           php${PHPVERSION}-gettext \
+          php${PHPVERSION}-gmp \
+          php${PHPVERSION}-http \
           php${PHPVERSION}-iconv \
           php${PHPVERSION}-intl \
           php${PHPVERSION}-ldap \
@@ -48,6 +52,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           php${PHPVERSION}-sockets \
           php${PHPVERSION}-xml \
           php${PHPVERSION}-xmlreader \
+          php${PHPVERSION}-xmlwriter \
           php${PHPVERSION}-zip \
           pwgen \
           supervisor \
