@@ -59,6 +59,7 @@ Available environment variables are:
 * `MYSQL_USER`: Set your own MySql admin username (Default: admin)
 * `MYSQL_PASS`: Set your own MySql admin password (Or one will be randomly generated for you)
 * `DISABLE_INOTIFYWAIT_CLEAN`: If set to 1, disables the clean step on the directory monitor. This prevents Ampache from automatically cleaning files. If you are using a bind mount on an external storage, this may be desirable as it prevents Ampache from removing files if the external storage goes down.
+* `CATALOG_NAME`: Name of the Ampache catalog that the directory monitor (`inotifywait.sh`) should update when files change under `/media`. Must match an existing catalog name. (Default: music)
 * `LOG_FILE`: Full file path to ampache log file inside the container. (Default: /var/log/ampache/ampache.log) When available it will print log file data to the docker logs command. (e.g. `docker logs ampache`)
 
 #### Automated install
