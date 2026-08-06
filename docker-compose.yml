@@ -6,7 +6,7 @@ services:
     container_name: ampache
     restart: unless-stopped
     ports:
-      - "26724:80"
+      - "80:80"
     volumes:
       - ./data/client:/var/tmp/client
       - ./data/config:/var/www/config
