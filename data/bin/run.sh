@@ -15,10 +15,19 @@ else
     echo "=> Ampache config file found: $CONFIG_FILE"
 fi
 
-# Check for existing installation
-if [ -f "/var/tmp/client/$CLIENT_ZIP" ] && [ -f "/var/tmp/client/$CLIENT_INSTALL" ]; then
-    echo "=> Checking Ampache client install: $CLIENT_ZIP"
-    /var/tmp/client/$CLIENT_INSTALL
+# Install the web client (the install script works out what it needs to download or build)
+CLIENT_SCRIPT="/var/tmp/client/${CLIENT_INSTALL}"
+
+if [ -n "$CLIENT_INSTALL" ] && [ -f "$CLIENT_SCRIPT" ]; then
+    echo "=> Checking Ampache client install: $CLIENT_INSTALL"
+    if [ ! -x "$CLIENT_SCRIPT" ]; then
+        CLIENT_SCRIPT="bash $CLIENT_SCRIPT"
+    fi
+    if ! $CLIENT_SCRIPT; then
+        echo "=> WARNING: Ampache client install failed: $CLIENT_INSTALL"
+    fi
+elif [ -n "$CLIENT_INSTALL" ]; then
+    echo "=> Ampache client install script not found: $CLIENT_SCRIPT"
 fi
 # Set a default log file if LOG_FILE is not set
 LOG_FILE=${LOG_FILE:-/var/log/ampache/ampache.log}

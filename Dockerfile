@@ -33,6 +33,8 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           locales \
           logrotate \
           mariadb-server \
+          nodejs \
+          npm \
           ocrad \
           php${PHPVERSION} \
           php${PHPVERSION}-ctype \
@@ -59,7 +61,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           vorbis-tools \
           zip \
           unzip \
-          git \
     &&  rm -rf /var/www /etc/apache2/sites-enabled/* /var/lib/apt/lists/* \
     &&  mkdir -p /var/log/ampache \
     &&  chown -R www-data:www-data /var/log/ampache \
@@ -85,11 +86,8 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  locale-gen \
     &&  apt-get -qq purge \
           extrepo \
-          git \
           libdvd-pkg \
           lsb-release \
-          git \
-          wget \
     &&  apt-get -qq autoremove
 
 VOLUME ["/var/www/config", "/var/tmp/client"]
