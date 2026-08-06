@@ -4,9 +4,19 @@ Docker image for Ampache, a web based audio/video streaming application and file
 
 ## NEWS
 
+### Ampache8 images
+
+The images on this page build Ampache7, which is the current stable release. Official Ampache8 images will start being built closer to the Ampache8 release.
+
+In the meantime the `docker-compose.yml` in the [Ampache repository](https://github.com/ampache/ampache) itself is a full Ampache8 development stack: it builds `docker/Dockerfilephp85` (PHP 8.5) alongside a MariaDB service, and can install the database and create the admin user on first run. See [Ampache8 for Admins](/docs/help/troubleshooting/ampache8-for-admins#docker) for the environment variables it takes.
+
+That is a different file to the `docker-compose.yml` in the ampache-docker repository described below.
+
+### Debian Trixie
+
 Debian has released a new stable version and containers are updated to match.
 
-* Trixie uses PHP 8.4 and MariaDB has been updated to the latest LTS version.
+* Trixie uses PHP 8.4 and MariaDB has been updated to the latest LTS version. Ampache8 needs PHP 8.5, which is why its images are built from the Ampache repository's own `Dockerfilephp85` for now.
 * The UID and GID of mysql has changed and this [commit](https://github.com/ampache/ampache-docker/commit/1020db4855d641b938560b90c513aa667c6f5df2) checks that your ID's match the container ID's.
 * The included `php.ini` file has been updated so you may need to update yours depending on your changes.
 
