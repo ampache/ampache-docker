@@ -33,6 +33,8 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           locales \
           logrotate \
           mariadb-server \
+          nodejs \
+          npm \
           ocrad \
           php${PHPVERSION} \
           php${PHPVERSION}-ctype \
@@ -86,10 +88,8 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  locale-gen \
     &&  apt-get -qq purge \
           extrepo \
-          git \
           libdvd-pkg \
           lsb-release \
-          wget \
     &&  apt-get -qq autoremove
 
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/www/config", "/var/tmp/client"]

@@ -1,0 +1,4 @@
+# downloaded releases, npm cache and client builds
+.cache/
+# client zips dropped in here by hand
+*.zip
