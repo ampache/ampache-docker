@@ -8,7 +8,9 @@ Docker image for Ampache, a web based audio/video streaming application and file
 
 The images on this page build Ampache7, which is the current stable release. Official Ampache8 images will start being built closer to the Ampache8 release.
 
-In the meantime the `docker-compose.yml` in the [Ampache repository](https://github.com/ampache/ampache) itself is a full Ampache8 development stack: it builds `docker/Dockerfilephp85` (PHP 8.5) alongside a MariaDB service, and can install the database and create the admin user on first run. See [Ampache8 for Admins](/docs/help/troubleshooting/ampache8-for-admins#docker) for the environment variables it takes.
+If you want to run Ampache8 code before then, the [`preview`](#ampachepreview) and [`nosql-preview`](#ampachenosql-develop-and-ampachenosql-preview) tags are built from the Ampache `develop8` branch. These are development builds, so expect them to break.
+
+The `docker-compose.yml` in the [Ampache repository](https://github.com/ampache/ampache) itself is a full Ampache8 development stack: it builds `docker/Dockerfilephp85` (PHP 8.5) alongside a MariaDB service, and can install the database and create the admin user on first run. See [Ampache8 for Admins](/docs/help/troubleshooting/ampache8-for-admins#docker) for the environment variables it takes.
 
 That is a different file to the `docker-compose.yml` in the ampache-docker repository described below.
 
@@ -16,7 +18,7 @@ That is a different file to the `docker-compose.yml` in the ampache-docker repos
 
 Debian has released a new stable version and containers are updated to match.
 
-* Trixie uses PHP 8.4 and MariaDB has been updated to the latest LTS version. Ampache8 needs PHP 8.5, which is why its images are built from the Ampache repository's own `Dockerfilephp85` for now.
+* MariaDB has been updated to the latest LTS version. Trixie itself ships PHP 8.4, but these images install PHP 8.5 from the [Sury](https://deb.sury.org) repository, so they already have the PHP version Ampache8 needs.
 * The UID and GID of mysql has changed and this [commit](https://github.com/ampache/ampache-docker/commit/1020db4855d641b938560b90c513aa667c6f5df2) checks that your ID's match the container ID's.
 * The included `php.ini` file has been updated so you may need to update yours depending on your changes.
 
@@ -59,6 +61,10 @@ This automatically creates the following bind mounts:
 * `./data/config` mounted at `/var/www/config` for persistent Ampache configuration
 * `./data/log` mounted at `/var/log/ampache` for debug logs
 
+The [client](#ampacheclient) images add one more:
+
+* `./data/client` mounted at `/var/tmp/client` for the client install scripts and their download and build cache
+
 ### Environment variables
 
 You can configure parts of the container using environment variables. When running with `docker run`, you can set an environment variable using the `-e` parameter; for example, `-e FOO=BAR` sets the environemnt variable `FOO` to bar. When using `docker-compose`, you can set environment variables using a `.env` file in this directory.
@@ -70,6 +76,8 @@ Available environment variables are:
 * `MYSQL_PASS`: Set your own MySql admin password (Or one will be randomly generated for you)
 * `DISABLE_INOTIFYWAIT_CLEAN`: If set to 1, disables the clean step on the directory monitor. This prevents Ampache from automatically cleaning files. If you are using a bind mount on an external storage, this may be desirable as it prevents Ampache from removing files if the external storage goes down.
 * `LOG_FILE`: Full file path to ampache log file inside the container. (Default: /var/log/ampache/ampache.log) When available it will print log file data to the docker logs command. (e.g. `docker logs ampache`)
+* `UID`: Change the uid of the `www-data` user in the container to match a user on your host
+* `GID`: Change the gid of the `www-data` group in the container to match a group on your host
 
 #### Automated install
 
@@ -97,12 +105,18 @@ An install will only run when there is no existing config file (`/var/www/config
   * AMPACHE_DB_PASSWORD
   * AMPACHE_ADMIN_PASSWORD
 
-For the [Ampache client](#ampacheclient) image type there are two additional variables.
+#### Web clients
 
-To use a custom interface the files must exist in the container. (Either copied from `/data/client` to `/var/tmp/client` during image build or by using a volume mounted to `/var/tmp/client`)
+The [Ampache client](#ampacheclient) image types install a web client into the base of the web interface. (See [Web clients](#web-clients-1) for the clients that are included)
 
-* `CLIENT_ZIP` Custom client install zip (Default: `ample.zip`)
-* `CLIENT_INSTALL` Custom client install script (Default: `ample.sh`)
+The install scripts must exist in the container. (Either copied from `/data/client` to `/var/tmp/client` during image build or by using a volume mounted to `/var/tmp/client`)
+
+* `CLIENT_INSTALL` Client install script (Default: `ample.sh`)
+* `CLIENT_VERSION` Client release tag to install, or `latest` (Default: `latest`)
+* `CLIENT_ZIP` Install from a local zip instead of downloading a release (Ample only)
+* `CLIENT_FORCE` If 1 then reinstall the client even when it is already installed
+
+Downloads and builds are cached in `/var/tmp/client/.cache` so that recreating the container does not download or build the client again.
 
 EXAMPLE: This will create an Ampache develop container on port 80 with a random password for the admin user.
 
@@ -186,6 +200,10 @@ Pulls the most recent image from the Master (stable) branch
 
 Pulls the most recent image from the Develop branch. This is generally safe to run but can break occasionally. Contains the latest features and updates.
 
+### `ampache:preview`
+
+Pulls the most recent image built from the Ampache `develop8` branch. This is unreleased Ampache8 code, so expect it to break. Use it to preview what is coming, not to run your library.
+
 ### `ampache:nosql`
 
 For advanced users, this provides an image without a MySQL server built-in. You must provide your own MySQL server.
@@ -194,21 +212,101 @@ For advanced users, this provides an image without a MySQL server built-in. You 
 
 The `nosql` image pinned to a specific version.
 
-e.g. `ampache:nosql7`, `ampache:nosql7.7.2`
+e.g. `ampache:nosql7`, `ampache:nosql7.10.1`
+
+### `ampache:nosql-develop` and `ampache:nosql-preview`
+
+The `develop` and `preview` images without a MySQL server built-in.
 
 ### `ampache:client`
 
 For advanced users, this provides an image using [Client Structure](/docs/information/ampache7-client-structure-install-type). This allows you to run your own API client inside the base of the web interface.
 
-This image uses [Ample](https://github.com/mitchray/ample) by default and can be customized using [automated install](#automated-install) variables.
+This image uses [Ample](https://github.com/mitchray/ample) by default and can be changed to [tinysub](https://tangled.org/devins.page/tinysub) or your own client. (See [Web clients](#web-clients-1))
+
+### `ampache:client<version>`
+
+The `client` image pinned to a specific version.
+
+e.g. `ampache:client7`, `ampache:client7.10.1`
 
 ### `ampache:client-nosql`
 
 For advanced users, this provides a [Client Structure](/docs/information/ampache7-client-structure-install-type) image without a MySQL server built-in. You must provide your own MySQL server.
 
+### `ampache:client-nosql<version>`
+
+The `client-nosql` image pinned to a specific version.
+
+e.g. `ampache:client-nosql7`, `ampache:client-nosql7.10.1`
+
+## Web clients
+
+The client images ship an install script for each supported client in `/var/tmp/client`. Pick one with `CLIENT_INSTALL` and it is installed into the base of the web interface when the container starts. Ampache keeps working underneath at the usual paths (`/server`, `/rest`, `/play`, `/image.php` and so on), so the client is what you see when you open the container in a browser.
+
+Nothing stops you adding your own script to `/var/tmp/client` and pointing `CLIENT_INSTALL` at it.
+
+Switching between clients is best done on a fresh container. The web root is not a volume, so recreating the container gives you a clean Ampache install for the new client to write into.
+
+### Ample
+
+[Ample](https://github.com/mitchray/ample) is the default client and uses the Ampache API.
+
+The latest release is downloaded from GitHub unless you pin one with `CLIENT_VERSION` or install a local zip with `CLIENT_ZIP`.
+
+* `AMPACHE_URL` Written into `config/ample.json` as the `ampacheURL`
+
+```shell
+docker run -d --name=ampache-client \
+    -e AMPACHE_URL=https://music.example.com \
+    -p 80:80 \
+    ampache/ampache:client
+```
+
+### tinysub
+
+[tinysub](https://tangled.org/devins.page/tinysub) is an [OpenSubsonic](https://opensubsonic.netlify.app) client, so it talks to the Subsonic API at `/rest`. Make sure `subsonic_backend` is enabled in your Ampache config.
+
+tinysub does not publish build artifacts, so the container clones the latest tagged source and builds it with npm on first start. The build needs network access and takes a few minutes. It is cached in `/var/tmp/client/.cache`, so keep that volume if you do not want to build again when the container is recreated. The npm cache in there uses a bit over 100MB and can be deleted at any time.
+
+tinysub bakes its settings into the build, so changing any of these variables rebuilds the client.
+
+* `TINYSUB_SERVER` Prefilled server url (Fallback to `AMPACHE_URL`)
+* `TINYSUB_SERVER_LOCK` If true, hide the server url input (Default: false)
+* `TINYSUB_USERNAME` Prefilled username
+* `TINYSUB_PASSWORD` Prefilled password
+* `TINYSUB_NAME` Deployment name shown in the settings page
+* `TINYSUB_BASE_URL` Base path of the build (Default: `/`)
+* `TINYSUB_BUILD_TARGET` Browser build target
+* `TINYSUB_DIST` Install a prebuilt `dist` folder or zip instead of building
+
+**The prefilled username and password are embedded in the build and readable by anyone who can load the page.** They exist for demo servers. Never set them to real user credentials.
+
+```shell
+docker run -d --name=ampache-tinysub \
+    -e CLIENT_INSTALL=tinysub.sh \
+    -e TINYSUB_SERVER=https://music.example.com \
+    -e TINYSUB_NAME="My Server" \
+    -p 80:80 \
+    ampache/ampache:client
+```
+
+If you would rather not build in the container, build tinysub yourself (`npm install && npm run build`) and mount the result:
+
+```shell
+docker run -d --name=ampache-tinysub \
+    -e CLIENT_INSTALL=tinysub.sh \
+    -e TINYSUB_DIST=/var/tmp/client/dist \
+    -v ./dist:/var/tmp/client/dist:ro \
+    -p 80:80 \
+    ampache/ampache:client
+```
+
 ## Running on ARM
 
 The automated builds for the official repo are now built for linux/amd64, linux/arm/v7 and linux/arm64.
+
+Building [tinysub](#tinysub) inside the container is slow on ARM boards. Use `TINYSUB_DIST` to install a copy you built elsewhere if the first start takes too long.
 
 ## Installation
 
@@ -230,6 +328,8 @@ The automated builds for the official repo are now built for linux/amd64, linux/
     2. Click [Return to main page] to login using previously entered credentials
 
 After installation you will need to setup a catalog. Make sure to use `/media` as the path where your media is located.
+
+Name that catalog `music` if you want the containers to pick up file changes as they happen. The directory monitor watches `/media` and updates the catalog named `music`, so a catalog with any other name is only updated by the hourly cron job.
 
 ## Set the local_web_path
 
