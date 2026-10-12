@@ -32,6 +32,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           libvpx-dev \
           locales \
           logrotate \
+          mariadb-client \
           mariadb-server \
           nodejs \
           npm \
@@ -68,6 +69,8 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/log/ampache \
     &&  mkdir -p /var/tmp/client \
     &&  chown -R www-data:www-data /var/tmp/client \
+    &&  mkdir -p /var/www/backup \
+    &&  chown -R www-data:www-data /var/www/backup \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
     &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/${VERSION}/ampache-${VERSION}_all_php${PHPVERSION}_client.zip \
@@ -95,7 +98,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/www/config", "/var/tmp/client"]
 EXPOSE 80
 
-COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/mysql.sh data/bin/create_mysql_admin_user.sh data/bin/install.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
+COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/mysql.sh data/bin/create_mysql_admin_user.sh data/bin/install.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh data/bin/backup-db.sh /usr/local/bin/
 COPY data/client/* /var/tmp/client/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
 COPY data/apache2/php.ini /etc/php/${PHPVERSION}/apache2/

@@ -9,6 +9,7 @@ services:
       - "80:80"
     volumes:
       - ./data/client:/var/tmp/client
+      - ./data/backup:/var/www/backup
       - ./data/config:/var/www/config
       - ./data/log:/var/log/ampache
       - ./data/media:/media
