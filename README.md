@@ -178,6 +178,36 @@ Optionally, the media directory should be writable as if you wish to allow uploa
 chgrp 33 ./data/media && chmod g+w ./data/media
 ```
 
+## Backups
+
+The image ships `backup-db.sh`, which dumps your Ampache database using the credentials already stored in `ampache.cfg.php`. It needs no arguments:
+
+```shell
+docker exec ampache backup-db.sh
+```
+
+Each run writes a dated SQL file to `/var/www/backup`, e.g. `/var/www/backup/2026-10-12.sql`.
+
+With `docker-compose.yml` this is already bind mounted via `./data/backup`, so dumps land on the host. If you're using `docker run` instead, add the mount yourself:
+
+```shell
+docker run --name=ampache -d -v ./data/backup:/var/www/backup -v /path/to/your/music:/media:ro -p 80:80 ampache/ampache
+```
+
+Schedule it from the host with cron for regular backups, for example nightly at 3am:
+
+```shell
+0 3 * * * docker exec ampache backup-db.sh
+```
+
+To restore a dump, pipe it into `mysql` using the same database credentials from `ampache.cfg.php`:
+
+```shell
+docker exec -i ampache mysql -u<database_username> -p<database_password> <database_name> < ./data/backup/2026-10-12.sql
+```
+
+Only the database is backed up this way. Your Ampache configuration (`./data/config`) and media (`./data/media`) are your own bind mounts, so back those up separately with your usual host backup tooling.
+
 ## Image Variants
 
 For more advanced users a few different image variants are available.
