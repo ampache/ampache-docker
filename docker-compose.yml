@@ -8,6 +8,7 @@ services:
     ports:
       - "80:80"
     volumes:
+      - ./data/backup:/var/www/backup
       - ./data/config:/var/www/config
       - ./data/log:/var/log/ampache
       - ./data/media:/media
