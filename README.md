@@ -6,13 +6,11 @@ Docker image for Ampache, a web based audio/video streaming application and file
 
 ### Ampache8 images
 
-The images on this page build Ampache7, which is the current stable release. Official Ampache8 images will start being built closer to the Ampache8 release.
+Ampache 8 has released with a config change to be aware of. We now default `memory_cache` to true.
 
-If you want to run Ampache8 code before then, the [`preview`](#ampachepreview) and [`nosql-preview`](#ampachenosql-develop-and-ampachenosql-preview) tags are built from the Ampache `develop8` branch. These are development builds, so expect them to break.
+This means that Ampache 8 uses more memory than Ampache 7 by default.
 
-The `docker-compose.yml` in the [Ampache repository](https://github.com/ampache/ampache) itself is a full Ampache8 development stack: it builds `docker/Dockerfilephp85` (PHP 8.5) alongside a MariaDB service, and can install the database and create the admin user on first run. See [Ampache8 for Admins](/docs/help/troubleshooting/ampache8-for-admins#docker) for the environment variables it takes.
-
-That is a different file to the `docker-compose.yml` in the ampache-docker repository described below.
+The default memory limit of the images has been increased from 128M to 512M to compensate.
 
 ### Debian Trixie
 
