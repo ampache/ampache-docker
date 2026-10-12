@@ -2,9 +2,8 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFIG_FILE="${SCRIPT_DIR}/../config/ampache.cfg.php"
-BACKUP_DIR="${SCRIPT_DIR}/../backup"
+CONFIG_FILE="/var/www/config/ampache.cfg.php"
+BACKUP_DIR="/var/www/backup"
 
 if [[ ! -f "${CONFIG_FILE}" ]]; then
     echo "ERROR: Config file not found: ${CONFIG_FILE}"
@@ -57,7 +56,6 @@ if ! "${MYSQLDUMP}" \
     echo "ERROR: Database backup failed"
     echo "host ${DB_HOST}"
     echo "user ${DB_USER}"
-    echo "pass ${DB_PASS}"
     rm -f "${BACKUP_FILE}"
     exit 1
 fi
