@@ -76,6 +76,8 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/${VERSION}/ampache-${VERSION}_all_php${PHPVERSION}_client.zip \
     &&  unzip /tmp/master.zip -d /var/www/ \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
+    &&  cp -f /var/www/public/rss/.htaccess.dist /var/www/public/rss/.htaccess \
+    &&  cp -f /var/www/public/.htaccess.dist /var/www/public/.htaccess \
     &&  (cp -f /var/www/public/client/play/.htaccess.dist /var/www/public/client/play/.htaccess 2>/dev/null || cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess) \
     &&  cp -f /var/www/config/ampache.cfg.php.dist /var/tmp/ \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
@@ -91,8 +93,11 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  locale-gen \
     &&  apt-get -qq purge \
           extrepo \
+          git \
           libdvd-pkg \
           lsb-release \
+          unzip \
+          wget \
     &&  apt-get -qq autoremove
 
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/www/config", "/var/tmp/client"]
