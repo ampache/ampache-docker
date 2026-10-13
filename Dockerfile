@@ -69,7 +69,8 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
     &&  wget -q -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
-    &&  unzip /tmp/develop.zip -d /var/www/ \
+    &&  unzip /tmp/develop.zip -d /tmp/ \
+    &&  mv /tmp/ampache-develop /var/www \
     &&  mkdir -p /var/www/backup \
     &&  chown -R www-data:www-data /var/www/backup \
     &&  cp -f /var/www/public/jellyfin/.htaccess.dist /var/www/public/jellyfin/.htaccess \
