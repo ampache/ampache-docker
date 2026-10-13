@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV MYSQL_USER=admin
 ENV MYSQL_PASS=**Random**
 ENV DISABLE_INOTIFYWAIT_CLEAN=0
-ARG VERSION=8.1.0
+ARG VERSION=8.2.2
 ARG PHPVERSION=8.5
 
 RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/20230612T000000Z\nURIs: http://deb.debian.org/debian\nSuites: stable stable-updates\nComponents: main contrib non-free\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n\nTypes: deb\n# http://snapshot.debian.org/archive/debian-security/20230612T000000Z\nURIs: http://deb.debian.org/debian-security\nSuites: stable-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n" > /etc/apt/sources.list.d/debian.sources' \
@@ -60,7 +60,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           vorbis-tools \
           zip \
           unzip \
-          git \
     &&  rm -rf /var/lib/mysql/* /var/www /etc/apache2/sites-enabled/* /var/lib/apt/lists/* \
     &&  mkdir -p /var/run/mysqld \
     &&  chown -R mysql /var/run/mysqld \
@@ -75,6 +74,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/www/backup \
     &&  cp -f /var/www/public/jellyfin/.htaccess.dist /var/www/public/jellyfin/.htaccess \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
+    &&  cp -f /var/www/public/rss/.htaccess.dist /var/www/public/rss/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
     &&  cp -f /var/www/public/.htaccess.dist /var/www/public/.htaccess \
     &&  cd /var/www \
@@ -87,6 +87,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  npm run build \
     &&  npm cache clean --force \
     &&  rm ./composer \
+    &&  rm -rf node_modules \
     &&  cp -f /var/www/config/ampache.cfg.php.dist /var/tmp/ \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
           /var/www/.tgitconfig /var/www/.travis.yml /var/www/*.md \
