@@ -66,13 +66,12 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R mysql /var/run/mysqld \
     &&  mkdir -p /var/log/ampache \
     &&  chown -R www-data:www-data /var/log/ampache \
-    &&  mkdir -p /var/www/backup \
-    &&  chown -R www-data:www-data /var/www/backup \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
     &&  wget -q -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
-    &&  unzip /tmp/develop.zip -d /tmp/ \
-    &&  mv /tmp/ampache-develop/ /var/www/ \
+    &&  unzip /tmp/develop.zip -d /var/www/ \
+    &&  mkdir -p /var/www/backup \
+    &&  chown -R www-data:www-data /var/www/backup \
     &&  cp -f /var/www/public/jellyfin/.htaccess.dist /var/www/public/jellyfin/.htaccess \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
