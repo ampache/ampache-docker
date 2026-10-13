@@ -70,17 +70,9 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/www/backup \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
-    &&  for i in 1 2 3 4 5; do \
-          rm -f /tmp/develop.zip; \
-          rm -rf /tmp/ampache-develop; \
-          wget -q --tries=5 --waitretry=5 --retry-connrefused -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
-            && unzip -tq /tmp/develop.zip \
-            && unzip -q /tmp/develop.zip -d /tmp/ \
-            && test -f /tmp/ampache-develop/public/rest/.htaccess.dist \
-            && break; \
-          echo "ampache develop archive incomplete, retrying ($i)..." >&2; \
-          sleep 5; \
-        done \
+    &&  wget -q --tries=5 --waitretry=5 --retry-connrefused -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
+    &&  unzip -tq /tmp/develop.zip \
+    &&  unzip -q /tmp/develop.zip -d /tmp/ \
     &&  test -f /tmp/ampache-develop/public/rest/.htaccess.dist \
     &&  mv /tmp/ampache-develop/ /var/www/ \
     &&  cp -f /var/www/public/jellyfin/.htaccess.dist /var/www/public/jellyfin/.htaccess \
