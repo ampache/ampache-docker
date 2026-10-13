@@ -76,12 +76,18 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           wget -q --tries=5 --waitretry=5 --retry-connrefused -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
             && unzip -tq /tmp/develop.zip \
             && unzip -q /tmp/develop.zip -d /tmp/ \
+            && test -f /tmp/ampache-develop/public/jellyfin/.htaccess.dist \
             && test -f /tmp/ampache-develop/public/rest/.htaccess.dist \
+            && test -f /tmp/ampache-develop/public/play/.htaccess.dist \
+            && test -f /tmp/ampache-develop/public/.htaccess.dist \
             && break; \
           echo "ampache develop archive incomplete, retrying ($i)..." >&2; \
           sleep 5; \
         done \
+    &&  test -f /tmp/ampache-develop/public/jellyfin/.htaccess.dist \
     &&  test -f /tmp/ampache-develop/public/rest/.htaccess.dist \
+    &&  test -f /tmp/ampache-develop/public/play/.htaccess.dist \
+    &&  test -f /tmp/ampache-develop/public/.htaccess.dist \
     &&  mv /tmp/ampache-develop/ /var/www/ \
     &&  cp -f /var/www/public/jellyfin/.htaccess.dist /var/www/public/jellyfin/.htaccess \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
