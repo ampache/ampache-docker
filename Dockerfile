@@ -32,7 +32,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           locales \
           logrotate \
           mariadb-client \
-          mariadb-server \
           npm \
           ocrad \
           php${PHPVERSION} \
@@ -60,18 +59,19 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           vorbis-tools \
           zip \
           unzip \
-          git \
     &&  rm -rf /var/www /etc/apache2/sites-enabled/* /var/lib/apt/lists/* \
     &&  mkdir -p /var/log/ampache \
     &&  chown -R www-data:www-data /var/log/ampache \
-    &&  mkdir -p /var/www/backup \
-    &&  chown -R www-data:www-data /var/www/backup \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
     &&  wget -q -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
     &&  unzip /tmp/develop.zip -d /tmp/ \
     &&  mv /tmp/ampache-develop/ /var/www/ \
+    &&  mkdir -p /var/www/backup \
+    &&  chown -R www-data:www-data /var/www/backup \
+    &&  cp -f /var/www/public/jellyfin/.htaccess.dist /var/www/public/jellyfin/.htaccess \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
+    &&  cp -f /var/www/public/rss/.htaccess.dist /var/www/public/rss/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
     &&  cp -f /var/www/public/.htaccess.dist /var/www/public/.htaccess \
     &&  cd /var/www \
@@ -84,6 +84,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  npm run build \
     &&  npm cache clean --force \
     &&  rm ./composer \
+    &&  rm -rf node_modules \
     &&  cp -f /var/www/config/ampache.cfg.php.dist /var/tmp/ \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
           /var/www/.tgitconfig /var/www/.travis.yml /var/www/*.md \
@@ -103,7 +104,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           git \
           libdvd-pkg \
           lsb-release \
-          git \
           npm \
           unzip \
           wget \
