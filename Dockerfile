@@ -72,7 +72,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/www/backup \
     &&  ( [ -f /var/www/public/jellyfin/.htaccess.dist ] && cp -f /var/www/public/jellyfin/.htaccess.dist /var/www/public/jellyfin/.htaccess || true ) \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
-    &&  cp -f /var/www/public/rss/.htaccess.dist /var/www/public/rss/.htaccess \
+    &&  ( [ -f /var/www/public/rss/.htaccess.dist ] && cp -f /var/www/public/rss/.htaccess.dist /var/www/public/rss/.htaccess || true ) \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
     &&  cp -f /var/www/public/.htaccess.dist /var/www/public/.htaccess \
     &&  cp -f /var/www/config/ampache.cfg.php.dist /var/tmp/ \
