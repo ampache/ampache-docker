@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV MYSQL_USER=admin
 ENV MYSQL_PASS=**Random**
 ENV DISABLE_INOTIFYWAIT_CLEAN=0
-ARG VERSION=7.9.8
+ARG VERSION=8.2.2
 ARG PHPVERSION=8.5
 
 RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/20230612T000000Z\nURIs: http://deb.debian.org/debian\nSuites: stable stable-updates\nComponents: main contrib non-free\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n\nTypes: deb\n# http://snapshot.debian.org/archive/debian-security/20230612T000000Z\nURIs: http://deb.debian.org/debian-security\nSuites: stable-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n" > /etc/apt/sources.list.d/debian.sources' \
@@ -32,6 +32,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           libvpx-dev \
           locales \
           logrotate \
+          mariadb-client \
           mariadb-server \
           ocrad \
           php${PHPVERSION} \
@@ -67,8 +68,13 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  a2enmod rewrite \
     &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/${VERSION}/ampache-${VERSION}_all_php${PHPVERSION}.zip \
     &&  unzip /tmp/master.zip -d /var/www/ \
+    &&  mkdir -p /var/www/backup \
+    &&  chown -R www-data:www-data /var/www/backup \
+    &&  ( [ -f /var/www/public/jellyfin/.htaccess.dist ] && cp -f /var/www/public/jellyfin/.htaccess.dist /var/www/public/jellyfin/.htaccess || true ) \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
+    &&  cp -f /var/www/public/rss/.htaccess.dist /var/www/public/rss/.htaccess \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
+    &&  cp -f /var/www/public/.htaccess.dist /var/www/public/.htaccess \
     &&  cp -f /var/www/config/ampache.cfg.php.dist /var/tmp/ \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
           /var/www/.tgitconfig /var/www/.travis.yml /var/www/*.md \
@@ -94,7 +100,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
 VOLUME ["/var/www/config"]
 EXPOSE 80
 
-COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/install.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
+COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/install.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh data/bin/backup-db.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
 COPY data/apache2/php.ini /etc/php/${PHPVERSION}/apache2/
 COPY data/logrotate.d/* /etc/logrotate.d/
