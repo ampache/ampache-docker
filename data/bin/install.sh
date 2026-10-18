@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mysqld_safe &
+mariadbd-safe &
 sleep 5
 
 RET=1
