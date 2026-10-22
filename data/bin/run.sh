@@ -3,7 +3,7 @@
 if [[ ! -d /var/lib/mysql/mysql ]]; then
     echo "=> An empty or uninitialized MySQL volume is detected in $VOLUME_HOME"
     echo "=> Installing MySQL ..."
-    mysql_install_db --auth-root-authentication-method=normal --user=mysql
+    /usr/bin/mariadb-install-db --auth-root-authentication-method=normal --user=mysql
     echo "=> Done!"
     create_mysql_admin_user.sh
 else
