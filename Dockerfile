@@ -102,7 +102,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           debhelper-compat \
           extrepo \
           git \
-          libdvd-pkg \
           lsb-release \
           npm \
           unzip \
