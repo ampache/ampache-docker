@@ -4,6 +4,15 @@ Docker image for Ampache, a web based audio/video streaming application and file
 
 ## NEWS
 
+### Rootless containers
+
+The container no longer runs as root. On startup it still briefly runs as root to apply the `UID`/`GID` overrides and fix up volume ownership, then drops to the `www-data` user (UID/GID 33 by default) for everything: Apache, MariaDB, the hourly cron job and the log monitor.
+
+This fixes [#133](https://github.com/ampache/ampache-docker/issues/133) and [#116](https://github.com/ampache/ampache-docker/issues/116). A couple of things to be aware of:
+
+* MariaDB now runs as the `www-data` user instead of its own `mysql` system account, so on first start after upgrading, the container will do a one-off `chown` of `/var/lib/mysql` to match. For a large existing database this can take a while; subsequent restarts are instant since ownership is only fixed when it doesn't already match.
+* The container no longer uses the system `cron` daemon (it requires root), so `cron.sh` was replaced with an equivalent rootless scheduler that runs the hourly catalog job and daily log rotation on the same schedule as before.
+
 ### Ampache8 images
 
 Ampache 8 has released with a config change to be aware of. We now default `memory_cache` to true.
@@ -74,8 +83,8 @@ Available environment variables are:
 * `MYSQL_PASS`: Set your own MySql admin password (Or one will be randomly generated for you)
 * `DISABLE_INOTIFYWAIT_CLEAN`: If set to 1, disables the clean step on the directory monitor. This prevents Ampache from automatically cleaning files. If you are using a bind mount on an external storage, this may be desirable as it prevents Ampache from removing files if the external storage goes down.
 * `LOG_FILE`: Full file path to ampache log file inside the container. (Default: /var/log/ampache/ampache.log) When available it will print log file data to the docker logs command. (e.g. `docker logs ampache`)
-* `UID`: Change the uid of the `www-data` user in the container to match a user on your host
-* `GID`: Change the gid of the `www-data` group in the container to match a group on your host
+* `UID`: Change the uid of the `www-data` user in the container to match a user on your host. The whole container (Apache, MariaDB, cron, etc.) runs as this user.
+* `GID`: Change the gid of the `www-data` group in the container to match a group on your host. The whole container (Apache, MariaDB, cron, etc.) runs as this group.
 
 #### Automated install
 
@@ -165,7 +174,7 @@ Restart the container and logs will start flowing in!
 
 ### Permissions
 
-In the container the webserver runs as the http user (UID and GID 33). If you created the directories manually, it is important to ensure that the Ampache Configuration, and log directories are readable and writeable by that user.
+The container runs rootless: everything, including the webserver and MariaDB, runs as the `www-data` user (UID and GID 33 by default, see [`UID`/`GID`](#environment-variables) to change it). If you created the directories manually, it is important to ensure that the Ampache Configuration, MySQL, and log directories are readable and writeable by that user.
 
 ```shell
 chown 33:33 ./data/config -R
