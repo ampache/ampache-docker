@@ -16,14 +16,15 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  apt-get -q -q -y install --no-install-recommends \
           apache2 \
           beets \
-          cron \
           ffmpeg \
           flac \
           git \
+          gosu \
           graphicsmagick-imagemagick-compat \
           inotify-tools \
           lame \
           libavcodec-extra \
+          libcap2-bin \
           libev-libevent-dev \
           libfaac-dev \
           libmp3lame-dev \
@@ -65,6 +66,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/log/ampache \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
+    &&  setcap 'cap_net_bind_service=+ep' /usr/sbin/apache2 \
     &&  wget -q -O /tmp/master.zip https://github.com/ampache/ampache/releases/download/${VERSION}/ampache-${VERSION}_all_php${PHPVERSION}.zip \
     &&  unzip /tmp/master.zip -d /var/www/ \
     &&  mkdir -p /var/www/backup \
@@ -81,7 +83,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/www \
     &&  chmod -R 775 /var/www \
     &&  rm -rf /var/cache/* /tmp/* /var/tmp/master.zip /root/.cache /var/www/docs /var/www/.tx /var/log/*.log \
-    &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  sed -i 's/^# *\(en_US ISO-8859-1\)/\1/' /etc/locale.gen \
     &&  sed -i 's/^# *\(en_US.ISO-8859-15 ISO-8859-15\)/\1/' /etc/locale.gen \
     &&  sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
