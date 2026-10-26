@@ -1,16 +1,5 @@
 #!/bin/bash
 
-mariadbd-safe &
-sleep 5
-
-RET=1
-while [ $RET -ne 0 ]; do
-    echo "=> Waiting for confirmation of MySQL service startup"
-    sleep 5
-    mysql -uroot -e "status" > /dev/null 2>&1
-    RET=$?
-done
-
 # fall back for DB user variables if not set
 if [ -n "$DB_HOST" ]; then
     if [ -n "$MYSQL_USER" ] && [ ! -n "$DB_USER" ]; then
@@ -70,6 +59,3 @@ if [ -n "$AMPACHE_ADMIN_USER" ] && [ -n "$AMPACHE_ADMIN_EMAIL" ] ; then
     echo "=> Creating Ampache admin user"
     php /var/www/bin/cli admin:addUser "$AMPACHE_ADMIN_USER" -p "$AMPACHE_ADMIN_PASSWORD" -e "$AMPACHE_ADMIN_EMAIL" -l 100
 fi
-
-# shutdown MySQL to allow supervisor to take over
-mysqladmin -uroot shutdown
