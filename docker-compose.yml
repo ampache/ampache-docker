@@ -1,9 +1,9 @@
-name: ampache
+name: ampache-rootless
 
 services:
   ampache:
-    image: ampache/ampache:latest
-    container_name: ampache
+    image: ampache/ampache:rootless
+    container_name: ampache-rootless
     restart: unless-stopped
     ports:
       - "80:80"
