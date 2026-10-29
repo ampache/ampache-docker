@@ -11,6 +11,16 @@ if [ -f "$CUSTOM_CSS" ]; then
     cp -p "$CUSTOM_CSS" /var/www/public/templates/custom.css
 fi
 
+# Apply custom php.ini overrides if present in the config volume
+# This is merged on top of the built-in php.ini, so only the directives
+# it sets are changed; everything else keeps its hardened default.
+CUSTOM_INI="/var/www/config/custom.ini"
+PHP_CONFD_DIR="/etc/php/${PHPVERSION}/apache2/conf.d"
+if [ -f "$CUSTOM_INI" ] && [ -d "$PHP_CONFD_DIR" ]; then
+    echo "=> Applying custom.ini from $CUSTOM_INI"
+    cp -p "$CUSTOM_INI" "$PHP_CONFD_DIR/zzz-custom.ini"
+fi
+
 # INSTALL
 CONFIG_FILE="/var/www/config/ampache.cfg.php"
 
