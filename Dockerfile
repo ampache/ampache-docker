@@ -5,8 +5,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV MYSQL_USER=admin
 ENV MYSQL_PASS=**Random**
 ENV DISABLE_INOTIFYWAIT_CLEAN=0
-ARG VERSION=7.9.8
+ARG VERSION=8.2.2
 ARG PHPVERSION=8.5
+ENV PHPVERSION=${PHPVERSION}
 
 RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/20230612T000000Z\nURIs: http://deb.debian.org/debian\nSuites: stable stable-updates\nComponents: main contrib non-free\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n\nTypes: deb\n# http://snapshot.debian.org/archive/debian-security/20230612T000000Z\nURIs: http://deb.debian.org/debian-security\nSuites: stable-security\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n" > /etc/apt/sources.list.d/debian.sources' \
     &&  apt-get -q -q update \
@@ -32,6 +33,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           libvpx-dev \
           locales \
           logrotate \
+          mariadb-client \
           mariadb-server \
           npm \
           ocrad \
@@ -67,10 +69,11 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  chown -R www-data:www-data /var/log/ampache \
     &&  ln -s /etc/apache2/sites-available/001-ampache.conf /etc/apache2/sites-enabled/ \
     &&  a2enmod rewrite \
-    &&  wget -q -O /tmp/develop8.zip https://github.com/ampache/ampache/archive/refs/heads/develop8.zip \
-    &&  unzip /tmp/develop8.zip -d /tmp/ \
-    &&  mv -v /tmp/ampache-develop8 /var/www \
+    &&  wget -q -O /tmp/develop.zip https://github.com/ampache/ampache/archive/refs/heads/develop.zip \
+    &&  unzip /tmp/develop.zip -d /tmp/ \
+    &&  mv -v /tmp/ampache-develop /var/www \
     &&  cp -f /var/www/public/rest/.htaccess.dist /var/www/public/rest/.htaccess \
+    &&  ( [ -f /var/www/public/rss/.htaccess.dist ] && cp -f /var/www/public/rss/.htaccess.dist /var/www/public/rss/.htaccess || true ) \
     &&  cp -f /var/www/public/play/.htaccess.dist /var/www/public/play/.htaccess \
     &&  cd /var/www \
     &&  wget -q -O ./composer https://getcomposer.org/download/latest-stable/composer.phar \
@@ -81,13 +84,14 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  npm run build \
     &&  npm cache clean --force \
     &&  rm ./composer \
+    &&  cp -f /var/www/public/.htaccess.dist /var/www/public/.htaccess \
     &&  cp -f /var/www/config/ampache.cfg.php.dist /var/tmp/ \
     &&  rm -f /var/www/.php*cs* /var/www/.sc /var/www/.scrutinizer.yml \
           /var/www/.tgitconfig /var/www/.travis.yml /var/www/*.md \
     &&  find /var/www -type d -name ".git*" -print0 | xargs -0 rm -rf {} \
     &&  chown -R www-data:www-data /var/www \
     &&  chmod -R 775 /var/www \
-    &&  rm -rf /var/cache/* /tmp/* /var/tmp/develop8.zip /root/.cache /var/www/docs /var/www/.tx /var/log/*.log \
+    &&  rm -rf /var/cache/* /tmp/* /var/tmp/develop.zip /root/.cache /var/www/docs /var/www/.tx /var/log/*.log \
     &&  echo '30 * * * *   /usr/local/bin/ampache_cron.sh' | crontab -u www-data - \
     &&  sed -i 's/^# *\(en_US ISO-8859-1\)/\1/' /etc/locale.gen \
     &&  sed -i 's/^# *\(en_US.ISO-8859-15 ISO-8859-15\)/\1/' /etc/locale.gen \
@@ -98,7 +102,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           debhelper-compat \
           extrepo \
           git \
-          libdvd-pkg \
           lsb-release \
           git \
           npm \
@@ -109,7 +112,7 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/www/config"]
 EXPOSE 80
 
-COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/mysql.sh data/bin/create_mysql_admin_user.sh data/bin/install.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
+COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/mysql.sh data/bin/create_mysql_admin_user.sh data/bin/install.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh data/bin/backup-db.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
 COPY data/apache2/php.ini /etc/php/${PHPVERSION}/apache2/
 COPY data/logrotate.d/* /etc/logrotate.d/
