@@ -163,6 +163,17 @@ Restart the container and logs will start flowing in!
 2025-08-25T23:56:08+00:00 [user] (Ampache\Module\System\Session) -> Session created: 6ff7a5ebd8d9c629f3769ce7220c60ac
 ```
 
+### Custom CSS
+
+Ampache loads a `templates/custom.css` from the web root if present, which lets you override styles without patching a theme. Since the web root is not a persistent volume, drop your stylesheet into the config volume instead and it will be applied automatically:
+
+```shell
+cp /path/to/your/custom.css ./data/config/custom.css
+docker-compose restart ampache
+```
+
+On every container start, if `/var/www/config/custom.css` exists it is copied to `/var/www/public/templates/custom.css`. Update the file in `./data/config` and restart the container to apply changes.
+
 ### Permissions
 
 In the container the webserver runs as the http user (UID and GID 33). If you created the directories manually, it is important to ensure that the Ampache Configuration, and log directories are readable and writeable by that user.

@@ -13,6 +13,14 @@ fi
 # Copy Ampache config .dist files
 cp -p /var/tmp/*.dist /var/www/config/
 
+# Apply a custom stylesheet if one has been placed in the config volume
+CUSTOM_CSS="/var/www/config/custom.css"
+if [ -f "$CUSTOM_CSS" ]; then
+    echo "=> Applying custom.css from $CUSTOM_CSS"
+    mkdir -p /var/www/public/templates
+    cp -p "$CUSTOM_CSS" /var/www/public/templates/custom.css
+fi
+
 # INSTALL
 CONFIG_FILE="/var/www/config/ampache.cfg.php"
 
