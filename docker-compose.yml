@@ -13,6 +13,8 @@ services:
       - ./data/log:/var/log/ampache
       - ./data/media:/media
     environment:
+      UID: ${UID-}
+      GID: ${GID-}
       MYSQL_USER: ${MYSQL_USER-admin}
       MYSQL_PASS: ${MYSQL_PASS-**Random**}
       DB_NAME: ${DB_NAME-}
