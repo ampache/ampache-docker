@@ -28,12 +28,16 @@ if [ -d /var/lib/mysql ]; then
     fi
 fi
 
-# Drop root and run everything (apache, mysql, cron) as www-data, so the
-# container runs rootless. This also avoids permission denied errors if the
-# data volumes are mounted/owned by root.
+# Fix up permissions on the volumes Apache writes to as www-data (via its
+# own config, not by dropping this process's privileges: mariadb-install-db,
+# cron and supervisord all still need root here). This is also what makes a
+# custom UID/GID actually take effect, including for a host user who only
+# shares the GID (not the UID), e.g. to edit the config file from a desktop.
 if [ "$(id -u)" = '0' ]; then
-    chown -R www-data:www-data /var/www/config /var/log/ampache /var/log/apache2 /var/log/supervisor /var/run/apache2 /var/run/mysqld
-    exec gosu www-data "$@"
-else
-    exec "$@"
+    WWW_UID=$(id -u www-data)
+    WWW_GID=$(id -g www-data)
+    chown -R "$WWW_UID":"$WWW_GID" /var/www/config /var/log/ampache
+    chmod -R g+rwX /var/www/config /var/log/ampache
 fi
+
+exec "$@"

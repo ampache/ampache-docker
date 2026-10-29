@@ -208,6 +208,8 @@ chown 33:33 ./data/config -R
 chown 33:33 ./data/log
 ```
 
+On every start, the container also applies this ownership itself (using your [`UID`/`GID`](#environment-variables) overrides if set) and makes the directories group-writable, so a host user who only shares the GID (not the UID) can still edit files such as `ampache.cfg.php` directly, e.g. over a desktop file share.
+
 Optionally, the media directory should be writable as if you wish to allow uploads.
 
 ```shell
