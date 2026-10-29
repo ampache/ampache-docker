@@ -174,6 +174,22 @@ docker-compose restart ampache
 
 On every container start, if `/var/www/config/custom.css` exists it is copied to `/var/www/public/templates/custom.css`. Update the file in `./data/config` and restart the container to apply changes.
 
+### Custom php.ini
+
+You can override individual PHP settings without rebuilding the image or replacing the whole `php.ini`. Create a file with just the directives you want to change:
+
+```ini
+; ./data/config/custom.ini
+upload_max_filesize = 1024M
+post_max_size = 1024M
+```
+
+```shell
+docker-compose restart ampache
+```
+
+On every container start, if `/var/www/config/custom.ini` exists it is copied into PHP's `conf.d` directory, where it is loaded after the image's built-in `php.ini` and merges on top of it. Only the directives you set are overridden; anything you leave out keeps the image's hardened default. Update the file in `./data/config` and restart the container to apply changes.
+
 ### Permissions
 
 In the container the webserver runs as the http user (UID and GID 33). If you created the directories manually, it is important to ensure that the Ampache Configuration, and log directories are readable and writeable by that user.
