@@ -113,7 +113,6 @@ EXPOSE 80
 
 COPY data/bin/run.sh data/bin/inotifywait.sh data/bin/cron.sh data/bin/apache2.sh data/bin/install.sh data/bin/ampache_cron.sh data/bin/docker-entrypoint.sh /usr/local/bin/
 COPY data/sites-enabled/001-ampache.conf /etc/apache2/sites-available/
-COPY data/apache2/php.ini /etc/php/${PHPVERSION}/apache2/
 COPY data/logrotate.d/* /etc/logrotate.d/
 COPY data/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
