@@ -205,7 +205,7 @@ chown 33:33 ./data/config -R
 chown 33:33 ./data/log
 ```
 
-On every start, the container also applies this ownership itself (using your [`UID`/`GID`](#environment-variables) overrides if set) and makes the directories group-writable, so a host user who only shares the GID (not the UID) can still edit files such as `ampache.cfg.php` directly, e.g. over a desktop file share.
+On every start, while the container is still root, it also applies this ownership itself (using your [`UID`/`GID`](#environment-variables) overrides if set) and makes the config and log directories group-writable, so a host user who only shares the GID (not the UID) can still edit files such as `ampache.cfg.php` directly, e.g. over a desktop file share. If the container is instead started already running as a non-root user (for example, a fixed UID/GID set by your orchestrator), this step is skipped, so the volumes must already be owned correctly.
 
 Optionally, the media directory should be writable as if you wish to allow uploads.
 
