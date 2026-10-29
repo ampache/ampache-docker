@@ -169,6 +169,33 @@ Restart the container and logs will start flowing in!
 2025-08-25T23:56:08+00:00 [user] (Ampache\Module\System\Session) -> Session created: 6ff7a5ebd8d9c629f3769ce7220c60ac
 ```
 
+### Custom CSS
+
+Ampache loads a `templates/custom.css` from the web root if present, which lets you override styles without patching a theme. Since the web root is not a persistent volume, drop your stylesheet into the config volume instead and it will be applied automatically:
+
+```shell
+cp /path/to/your/custom.css ./data/config/custom.css
+docker-compose restart ampache
+```
+
+On every container start, if `/var/www/config/custom.css` exists it is copied to `/var/www/public/templates/custom.css`. Update the file in `./data/config` and restart the container to apply changes.
+
+### Custom php.ini
+
+You can override individual PHP settings without rebuilding the image or replacing the whole `php.ini`. Create a file with just the directives you want to change:
+
+```ini
+; ./data/config/custom.ini
+upload_max_filesize = 1024M
+post_max_size = 1024M
+```
+
+```shell
+docker-compose restart ampache
+```
+
+On every container start, if `/var/www/config/custom.ini` exists it is copied into PHP's `conf.d` directory, where it is loaded after the image's built-in `php.ini` and merges on top of it. Only the directives you set are overridden; anything you leave out keeps the image's hardened default. Update the file in `./data/config` and restart the container to apply changes.
+
 ### Permissions
 
 The container runs rootless: everything, including the webserver, runs as the `www-data` user (UID and GID 33 by default, see [`UID`/`GID`](#environment-variables) to change it). If you created the directories manually, it is important to ensure that the Ampache Configuration, and log directories are readable and writeable by that user.
