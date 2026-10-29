@@ -34,7 +34,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           locales \
           logrotate \
           mariadb-client \
-          mariadb-server \
           ocrad \
           php${PHPVERSION} \
           php${PHPVERSION}-ctype \
