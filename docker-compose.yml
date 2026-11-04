@@ -14,6 +14,8 @@ services:
       - ./data/media:/media
       - ./data/mysql:/var/lib/mysql
     environment:
+      UID: ${UID-}
+      GID: ${GID-}
       MYSQL_USER: ${MYSQL_USER-admin}
       MYSQL_PASS: ${MYSQL_PASS-**Random**}
       DB_NAME: ${DB_NAME-}
