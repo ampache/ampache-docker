@@ -97,7 +97,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  locale-gen \
     &&  apt-get -qq purge \
           extrepo \
-          git \
           lsb-release \
           unzip \
     &&  apt-get -qq autoremove
