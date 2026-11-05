@@ -100,7 +100,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
           git \
           lsb-release \
           unzip \
-          wget \
     &&  apt-get -qq autoremove
 
 VOLUME ["/etc/mysql", "/var/lib/mysql", "/var/www/config", "/var/tmp/client"]
