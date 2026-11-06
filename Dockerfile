@@ -95,7 +95,6 @@ RUN     sh -c 'echo "Types: deb\n# http://snapshot.debian.org/archive/debian/202
     &&  apt-get -qq purge \
           extrepo \
           lsb-release \
-          unzip \
     &&  apt-get -qq autoremove
 
 VOLUME ["/var/www/config", "/var/tmp/client"]
