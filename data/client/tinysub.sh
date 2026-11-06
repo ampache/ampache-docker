@@ -25,6 +25,13 @@
 #
 # The username and password are embedded in the build and readable by anyone who can
 # load the page. Only use them for demo accounts, never for a real user.
+#
+# tinysub installs as a PWA whose service worker scope is TINYSUB_BASE_URL, which defaults
+# to the whole origin. Once a browser has registered or installed it, that scope is free to
+# claim navigation to every path on the origin, including Ampache's own `/client` UI on the
+# `client` structure - showing tinysub there instead until the browser is restarted or the
+# install is removed. Set TINYSUB_BASE_URL to a subpath (e.g. "/tinysub/") to confine it if
+# you need `/client` and the other Ampache-served paths to stay reachable on the same origin.
 
 set -e
 
@@ -37,7 +44,16 @@ STAMP_FILE="${PUBLIC_DIR}/config/tinysub.build"
 
 TINYSUB_SERVER="${TINYSUB_SERVER:-$AMPACHE_URL}"
 TINYSUB_SERVER_LOCK="${TINYSUB_SERVER_LOCK:-false}"
+
+# Normalize to a leading-and-trailing-slash path so it joins cleanly below; this is also
+# how vite treats a `base` value that is missing either slash.
 TINYSUB_BASE_URL="${TINYSUB_BASE_URL:-/}"
+case "$TINYSUB_BASE_URL" in /*) ;; *) TINYSUB_BASE_URL="/${TINYSUB_BASE_URL}" ;; esac
+case "$TINYSUB_BASE_URL" in */) ;; *) TINYSUB_BASE_URL="${TINYSUB_BASE_URL}/" ;; esac
+
+# Where the build actually gets installed. The build's own asset references are baked to
+# this same path (VITE_TINYSUB_BASE_URL below), so the two must always move together.
+INSTALL_DIR="${PUBLIC_DIR}${TINYSUB_BASE_URL}"
 
 # Everything that gets baked into the build. A change here means a rebuild.
 # These are exported for the build rather than written to a .env file, because vite reads
@@ -60,12 +76,12 @@ SETTINGS_HASH=$(printf '%s\0' \
     "$VITE_TINYSUB_USERNAME" \
     "$VITE_TINYSUB_PASSWORD" | md5sum | cut -d' ' -f1)
 
-mkdir -p "$BUILD_CACHE" "${PUBLIC_DIR}/config"
+mkdir -p "$BUILD_CACHE" "${PUBLIC_DIR}/config" "$INSTALL_DIR"
 
 install_dist() {
     # $1: folder containing the built client
-    echo "=> Installing tinysub into ${PUBLIC_DIR}"
-    cp -rf "${1}/." "${PUBLIC_DIR}/"
+    echo "=> Installing tinysub into ${INSTALL_DIR}"
+    cp -rf "${1}/." "${INSTALL_DIR}"
     chown -R www-data:www-data "$PUBLIC_DIR"
 }
 
