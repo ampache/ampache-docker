@@ -11,6 +11,12 @@
 #   CLIENT_ZIP      Local zip to install instead of downloading
 #   CLIENT_FORCE    If 1, reinstall even when Ample is already installed
 #   AMPACHE_URL     Written into config/ample.json as the ampacheURL
+#
+# Ample reads its settings at runtime from config/ample.json, so that file must be
+# web-reachable. Ampache's own .htaccess denies config/ outright on releases built before
+# that got an exception for config/*.json, which otherwise leaves ampacheURL unset and
+# breaks every request with a literal "null" in the server URL. This script patches the
+# deployed .htaccess itself so Ample works regardless of the release zip in use.
 
 set -e
 
@@ -19,6 +25,18 @@ PUBLIC_DIR="/var/www/public"
 CLIENT_DIR="/var/tmp/client"
 CACHE_DIR="${CLIENT_DIR}/.cache"
 CONFIG_FILE="${PUBLIC_DIR}/config/ample.json"
+
+# Allow config/*.json through Ampache's "config/" hardening rule so a client's own runtime
+# settings can be fetched; ampache.cfg.php stays denied regardless by the FilesMatch block.
+ALLOW_RULE='RewriteRule ^config/[^/]+\.json$ - [L]'
+HTACCESS="${PUBLIC_DIR}/.htaccess"
+if [ -f "$HTACCESS" ] && ! grep -qF "$ALLOW_RULE" "$HTACCESS"; then
+    echo "=> Patching ${HTACCESS} to allow config/*.json"
+    RULE="    ${ALLOW_RULE}" awk '
+        { print }
+        !done && /RewriteEngine On/ { print ENVIRON["RULE"]; done=1 }
+    ' "$HTACCESS" > "${HTACCESS}.tmp" && mv "${HTACCESS}.tmp" "$HTACCESS"
+fi
 
 # Check for an existing installation
 if [ -f "$CONFIG_FILE" ] && [ "${CLIENT_FORCE:-0}" != "1" ]; then
